@@ -4,7 +4,7 @@
  * @LastEditTime: 2023-12-06 18:49:34
  * @FilePath: \websocket-tool\src\App.tsx
  */
-import { useState } from "react";
+import * as React from "react";
 import styled from "styled-components";
 import WsConfig from "./component/wsConfig";
 import WsStatus from "./component/wsStatus";
@@ -12,8 +12,7 @@ import IntervalSend from "./component/intervalSend";
 import TemporarySend from "./component/temporarySend";
 import ConsoleLog from "./component/consoleLog";
 import MessageRecords from "./component/messageRecords";
-import React from "react";
-import { WsContoller } from "@zs-ui/controllers";
+import { WsControllerContextProvider } from "./component/socketProvider";
 
 const Container = styled.div`
   width: 100%;
@@ -52,19 +51,11 @@ const Container = styled.div`
     }
   }
 `;
-const socket = new WsContoller({
-  heartBeatConfig: {
-    handleHeartBeatMsg: (msg) => {
-      console.log("msg>>>", msg);
-      return true;
-    },
-  },
-});
-socket.connect("ws://124.222.224.186:8800");
+
 function App() {
-  const [count, setCount] = useState(0);
+
   return (
-    <>
+    <WsControllerContextProvider>
       <Container>
         <section className="header"></section>
         <section className="body">
@@ -82,7 +73,7 @@ function App() {
           </div>
         </section>
       </Container>
-    </>
+    </WsControllerContextProvider>
   );
 }
 

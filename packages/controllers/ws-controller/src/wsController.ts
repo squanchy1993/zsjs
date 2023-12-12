@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/*
- * @Date: 2023-12-05 16:23:53
- * @LastEditors: zhusisheng zhusisheng@shenhaoinfo.com
- * @LastEditTime: 2023-12-06 19:03:28
- * @FilePath: \websocket-tool\src\component\socket.ts
- */
 export enum SocketStatus {
   closed = "closed",
   connecting = "connecting",

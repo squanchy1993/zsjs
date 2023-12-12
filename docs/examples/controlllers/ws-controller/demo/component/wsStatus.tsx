@@ -5,8 +5,11 @@
  * @FilePath: \websocket-tool\src\component\wsStatus.tsx
  */
 import styled from "styled-components";
-import React from "react";
+import * as React from "react";
 import CardItem from "./cardItem";
+import { SocketStatus } from "@zs-ui/controllers";
+import WsControllerContext from "./socketProvider";
+import classnames from "classnames";
 
 const Container = styled.div`
   width: 100%;
@@ -21,6 +24,7 @@ const Container = styled.div`
       width: 32px;
       border-radius: 16px;
       margin-right: 20px;
+      background-color: #5e5c5c;
     }
     .status--closed {
       background-color: #c32121;
@@ -38,19 +42,29 @@ const Container = styled.div`
 `;
 
 const WsStatus: React.FC = () => {
+  const wsController = React.useContext(WsControllerContext);
+  console.log(wsController.connectStatus)
+  setTimeout(() => {
+    wsController.connect('ws://124.222.224.186:8800')
+  }, 6000)
+
   return (
-    <>
-      <Container>
-        <CardItem title="连接状态">
-          <div className="status-group">
-            <div className="status status--closed"></div>
-            <div className="status status--processing"></div>
-            <div className="status status--connected"></div>
-            <span className="text">state: closed</span>
-          </div>
-        </CardItem>
-      </Container>
-    </>
+    <WsControllerContext.Consumer>
+      {value => (
+        <Container>
+          <CardItem title="连接状态">
+            <div className="status-group">
+              <div className={classnames('status', { 'status--closed': wsController.connectStatus == SocketStatus.closed })}></div>
+              <div className={classnames('status', { 'status--processing': [SocketStatus.connecting, SocketStatus.closing].includes(wsController.connectStatus) })}></div>
+              <div className={classnames('status', { 'status--connected': wsController.connectStatus == SocketStatus.connected })}></div>
+              <span className="text">state: {wsController.connectStatus}</span>
+            </div>
+          </CardItem>
+        </Container>
+      )}
+
+    </WsControllerContext.Consumer>
+
   );
 };
 
