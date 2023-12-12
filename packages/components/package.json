@@ -1,0 +1,18 @@
+{
+  "name": "@zs-ui/components",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./index.ts",
+  "scripts": {
+    "build": "rimraf ./lib && tsc -p src && node ../../script/copy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.2.13",
+    "react": "^18.2.0",
+    "rimraf": "^4.4.1",
+    "typescript": "^5.1.3"
+  }
+}
