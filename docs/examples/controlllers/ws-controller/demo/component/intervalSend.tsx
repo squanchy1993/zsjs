@@ -1,25 +1,21 @@
-/*
- * @Date: 2023-12-03 12:31:31
- * @LastEditors: zhusisheng zhusisheng@shenhaoinfo.com
- * @LastEditTime: 2023-12-05 10:44:18
- * @FilePath: \websocket-tool\src\component\IntervalSend.tsx
- */
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import CardItem from "./cardItem";
 import Button from '@mui/material/Button';
-import { Input } from "@mui/material";
+import { Input, TextField } from "@mui/material";
+import { loopFunc } from "@zs-ui/utils"
+import WsControllerContext from "./socketProvider";
+import { SocketStatus } from "@zs-ui/controllers";
+import { ZsMessage } from "@zs-ui/components";
+import { useOnMount } from "@zs-ui/hooks";
 
 const Container = styled.div`
   width: 100%;
   .send-group {
-    height: 150px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     .text-content {
-      flex: 1;
-      width: 100%;
-      border: 1px solid red;
       margin-bottom: 5px;
     }
     .input-content {
@@ -42,31 +38,82 @@ const Container = styled.div`
   }
 `;
 
-const WsStatus: React.FC = () => {
+interface IntervalSendProps {
+  setMessage: Function;
+}
+
+let loopLoigc: any = null;
+const IntervalSend: React.FC<IntervalSendProps> = ({ setMessage }: IntervalSendProps) => {
+  const textFieldRef = React.useRef<HTMLInputElement>();
+  const [open, setOpen] = React.useState(false);
+  const wsController = React.useContext(WsControllerContext);
+
+  useOnMount(() => {
+    loopLoigc = loopFunc(async () => {
+      if (wsController?.connectStatus !== SocketStatus.connected) {
+        loopLoigc.stop();
+        setOpen(false)
+        return
+      }
+
+      setMessage(textFieldRef.current?.value)
+      wsController?.send(textFieldRef.current?.value ?? '')
+    }, 1000)
+  })
+
+  const startLoop = () => {
+    if (wsController?.connectStatus !== SocketStatus.connected) {
+      ZsMessage.warning({ content: '请先开启链接' })
+      return
+    }
+
+    if (!textFieldRef?.current?.value) {
+      ZsMessage.warning({ content: '请输入要发送的内容' })
+      return
+    }
+    loopLoigc.start();
+    setOpen(true)
+  }
+
   return (
-    <>
-      <Container>
-        <CardItem title="定时发送">
-          <div className="send-group">
-            <div className="text-content"></div>
-            <div className="input-content">
-              <div className="title">发送间隔</div>
-              <Input
-                fullWidth
-                size="small"
-                placeholder="ws address"
-                disableUnderline={true}
-                type="number"
-              />
-              <Button variant="contained" size="small" color="success" disableElevation>
-                开始
-              </Button>
-            </div>
+    <Container>
+      <CardItem title="Interval send">
+        <div className="send-group">
+          <TextField
+            inputRef={textFieldRef}
+            className="text-content"
+            id="outlined-textarea"
+            multiline
+            variant="outlined"
+            maxRows={4}
+          />
+          <div className="input-content">
+            <div className="title">interval(seconds)</div>
+            <Input
+              fullWidth
+              size="small"
+              placeholder="ws address"
+              disableUnderline={true}
+              type="number"
+              defaultValue={1}
+              onChange={(event) => {
+                loopLoigc.setTime(Number(event.target.value) * 1000)
+              }}
+              inputProps={{ min: 0 }}
+            />
+
+
+            <Button disabled={wsController?.connectStatus !== SocketStatus.connected} style={{ display: !open ? "block" : "none" }} onClick={() => startLoop()} variant="contained" size="small" color="success" disableElevation>
+              start
+            </Button>
+            <Button disabled={wsController?.connectStatus !== SocketStatus.connected} style={{ display: !open ? "none" : "block" }} onClick={() => { loopLoigc.stop(); setOpen(false) }} variant="contained" size="small" color="success" disableElevation>
+              close
+            </Button>
           </div>
-        </CardItem>
-      </Container>
-    </>
+        </div>
+      </CardItem>
+    </Container>
   );
 };
 
-export default WsStatus;
+export default IntervalSend;

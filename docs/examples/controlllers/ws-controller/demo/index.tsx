@@ -1,17 +1,15 @@
-/*
- * @Date: 2023-12-03 12:31:31
- * @LastEditors: zhusisheng zhusisheng@shenhaoinfo.com
- * @LastEditTime: 2023-12-06 18:49:34
- * @FilePath: \websocket-tool\src\App.tsx
- */
 import * as React from "react";
 import styled from "styled-components";
+import { useReactive } from "@zs-ui/hooks";
+import { WsContoller } from "@zs-ui/controllers";
+
+// component
 import WsConfig from "./component/wsConfig";
 import WsStatus from "./component/wsStatus";
 import IntervalSend from "./component/intervalSend";
 import TemporarySend from "./component/temporarySend";
-import ConsoleLog from "./component/consoleLog";
 import MessageRecords from "./component/messageRecords";
+import ConsoleLog from './component/consoleLog'
 import { WsControllerContextProvider } from "./component/socketProvider";
 
 const Container = styled.div`
@@ -53,9 +51,30 @@ const Container = styled.div`
 `;
 
 function App() {
+  const wsContoller = useReactive(new WsContoller({
+    wsOptions: {
+      address: 'ws://124.222.224.186:8800',
+      onOpened: (wsCtl: WsContoller) => {
+        wsCtl.send('你好 服务器')
+      }
+    },
+    heartbeatOptions: {
+      handleHeartbeatMsg: (msg) => {
+        return msg.data.includes('---- heartbeat ----');
+      },
+      sendMsg: '---- heartbeat ----',
+    },
+
+  }))
+
+  const MessageRecordsRef = React.useRef()
+
+  const setMessage = (msg: string) => {
+    MessageRecordsRef.current?.addTomessageRecord(msg)
+  }
 
   return (
-    <WsControllerContextProvider>
+    <WsControllerContextProvider wsContoller={wsContoller}>
       <Container>
         <section className="header"></section>
         <section className="body">
@@ -63,12 +82,12 @@ function App() {
             <div className="left">
               <WsStatus />
               <WsConfig />
-              <IntervalSend />
-              <TemporarySend />
+              <IntervalSend setMessage={setMessage} />
+              <TemporarySend setMessage={setMessage} />
               <ConsoleLog />
             </div>
             <div className="right">
-              <MessageRecords />
+              <MessageRecords ref={MessageRecordsRef} />
             </div>
           </div>
         </section>

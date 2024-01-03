@@ -1,24 +1,21 @@
-/*
- * @Date: 2023-12-03 12:31:31
- * @LastEditors: zhusisheng zhusisheng@shenhaoinfo.com
- * @LastEditTime: 2023-12-04 18:55:33
- * @FilePath: \websocket-tool\src\component\WsConfig.tsx
- */
 import styled from "styled-components";
 import React from "react";
 import CardItem from "./cardItem";
-import Button from '@mui/material/Button';
-import { Input } from "@mui/material";
+import Button from "@mui/material/Button";
+import { Alert, Input } from "@mui/material";
+import WsControllerContext from "./socketProvider";
+import { ZsMessage } from "@zs-ui/components";
+import { SocketStatus } from "@zs-ui/controllers";
 
 const Container = styled.div`
   width: 100%;
   height: 100px;
-  .input-group{
+  .input-group {
     display: flex;
     height: 36px;
-    border: 1px solid rgba(0,0,0,.125);
+    border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
-    .title{
+    .title {
       line-height: 36px;
       font-size: 14px;
       padding: 0 5px;
@@ -33,25 +30,55 @@ const Container = styled.div`
 `;
 
 const WsConfig: React.FC = () => {
+  const wsController = React.useContext(WsControllerContext);
+  // const setOptions
+  const inputRef = React.useRef<HTMLInputElement>();
+
+  const connect = () => {
+    if (!inputRef.current?.value) {
+      ZsMessage.error({ content: "address must input", duration: 1000 });
+      return;
+    }
+
+    wsController?.setOptions({ wsOptions: { address: inputRef.current?.value }});
+    wsController?.connect({});
+  };
   return (
-    <>
-      <Container>
-        <CardItem title="服务器配置" >
-          <div className="input-group">
-            <div className="title">服务地址</div>
-            <Input
-              fullWidth
-              size="small"
-              placeholder="ws address"
-              disableUnderline={true}
-            />
-            <Button variant="contained" size="small" color="success" disableElevation>
-              搜索
-            </Button>
-          </div>
-        </CardItem>
-      </Container>
-    </>
+    <Container>
+      <CardItem title="Server">
+        <div className="input-group">
+          <div className="title">Server address</div>
+          <Input
+            inputRef={inputRef}
+            fullWidth
+            size="small"
+            placeholder="ws address"
+            defaultValue={"ws://124.222.224.186:8800"}
+            disableUnderline={true}
+          />
+          <Button
+            disabled={wsController?.connectStatus !== SocketStatus.closed}
+            onClick={() => connect()}
+            variant="contained"
+            size="small"
+            color="success"
+            disableElevation
+          >
+            connect
+          </Button>
+          <Button
+            disabled={wsController?.connectStatus !== SocketStatus.connected}
+            onClick={() => wsController?.close()}
+            variant="contained"
+            size="small"
+            color="warning"
+            disableElevation
+          >
+            close
+          </Button>
+        </div>
+      </CardItem>
+    </Container>
   );
 };
 

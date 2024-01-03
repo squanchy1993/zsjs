@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2019",
     "module": "ESNext",
-    "lib": ["ES2015"],
+    "lib": ["ES2015", "esnext", "DOM"],
     "jsx": "react",
     "declaration": true,
     "declarationMap": true,
@@ -15,6 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "preserveWatchOutput": true,
     "baseUrl": ".",
+    "noImplicitThis": false,
     "paths": {
       "my-button": ["./packages/button/src/index.tsx"],
       "my-card": ["./packages/card/src/index.tsx"]

@@ -1,9 +1,3 @@
-/*
- * @Date: 2023-12-03 12:31:31
- * @LastEditors: zhusisheng zhusisheng@shenhaoinfo.com
- * @LastEditTime: 2023-12-04 10:36:21
- * @FilePath: \websocket-tool\src\component\wsStatus.tsx
- */
 import styled from "styled-components";
 import * as React from "react";
 import CardItem from "./cardItem";
@@ -43,28 +37,17 @@ const Container = styled.div`
 
 const WsStatus: React.FC = () => {
   const wsController = React.useContext(WsControllerContext);
-  console.log(wsController.connectStatus)
-  setTimeout(() => {
-    wsController.connect('ws://124.222.224.186:8800')
-  }, 6000)
-
   return (
-    <WsControllerContext.Consumer>
-      {value => (
-        <Container>
-          <CardItem title="连接状态">
-            <div className="status-group">
-              <div className={classnames('status', { 'status--closed': wsController.connectStatus == SocketStatus.closed })}></div>
-              <div className={classnames('status', { 'status--processing': [SocketStatus.connecting, SocketStatus.closing].includes(wsController.connectStatus) })}></div>
-              <div className={classnames('status', { 'status--connected': wsController.connectStatus == SocketStatus.connected })}></div>
-              <span className="text">state: {wsController.connectStatus}</span>
-            </div>
-          </CardItem>
-        </Container>
-      )}
-
-    </WsControllerContext.Consumer>
-
+    <Container>
+      <CardItem title="connect state">
+        <div className="status-group">
+          <div className={classnames('status', { 'status--closed': wsController?.connectStatus == SocketStatus.closed })}></div>
+          <div className={classnames('status', { 'status--processing': [SocketStatus.connecting, SocketStatus.closing].includes(wsController?.connectStatus) })}></div>
+          <div className={classnames('status', { 'status--connected': wsController?.connectStatus == SocketStatus.connected })}></div>
+          <span onClick={() => console.log(wsController?.connectStatus)} className="text">state: {wsController?.connectStatus}</span>
+        </div>
+      </CardItem>
+    </Container>
   );
 };
 

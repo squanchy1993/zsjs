@@ -1,9 +1,3 @@
-/*
- * @Date: 2023-12-03 12:31:31
- * @LastEditors: 朱志森 826482354@qq.com
- * @LastEditTime: 2023-12-03 17:10:30
- * @FilePath: /websocket-tool/src/component/card.tsx
- */
 import styled from "styled-components";
 import React, { ReactNode } from "react";
 
