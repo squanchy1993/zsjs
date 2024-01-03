@@ -1,53 +1,79 @@
-/*
- * @Date: 2023-12-03 12:31:31
- * @LastEditors: zhusisheng zhusisheng@shenhaoinfo.com
- * @LastEditTime: 2023-12-05 10:28:10
- * @FilePath: \websocket-tool\src\component\temporarySend.tsx
- */
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import CardItem from "./cardItem";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
+import { Input, TextField } from "@mui/material";
+import WsControllerContext from "./socketProvider";
+import { SocketStatus } from "@zs-ui/controllers";
+import { ZsMessage } from "@zs-ui/components";
 
 const Container = styled.div`
   width: 100%;
   .send-group {
-    height: 150px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     .text-content {
-      flex: 1;
-      width: 100%;
-      border: 1px solid red;
       margin-bottom: 5px;
     }
     .input-content {
       display: flex;
       height: 36px;
-      border: 1px solid rgba(0,0,0,.125);
+      border: 1px solid rgba(0, 0, 0, 0.125);
       border-radius: 0.25rem;
-      & > button {
-        width: 100% !important;
-      }
     }
   }
 `;
-const TemporarySend: React.FC = () => {
+interface TemporarySendProps {
+  setMessage: Function;
+}
+
+const TemporarySend: React.FC<TemporarySendProps> = ({ setMessage }: TemporarySendProps) => {
+  const textFieldRef = React.useRef<HTMLInputElement>();
+  const wsController = React.useContext(WsControllerContext);
+
+  const startLoop = () => {
+    if (wsController?.connectStatus !== SocketStatus.connected) {
+      ZsMessage.warning({ content: "Please connect before you send." });
+      return;
+    }
+
+    if (!textFieldRef?.current?.value) {
+      ZsMessage.warning({ content: "The message cannot be empty." });
+      return;
+    }
+    setMessage(textFieldRef.current?.value);
+    wsController?.send(textFieldRef.current?.value);
+  };
+
   return (
-    <>
-      <Container>
-        <CardItem title="临时发送">
-          <div className="send-group">
-            <div className="text-content"></div>
-            <div className="input-content">
-              <Button variant="contained" size="small" color="success" disableElevation>
-                发送
-              </Button>
-            </div>
+    <Container>
+      <CardItem title="Temporary send">
+        <div className="send-group">
+          <TextField
+            inputRef={textFieldRef}
+            className="text-content"
+            id="outlined-textarea"
+            multiline
+            variant="outlined"
+            maxRows={4}
+          />
+          <div className="input-content">
+            <Button
+              disabled={wsController?.connectStatus !== SocketStatus.connected}
+              fullWidth={true}
+              onClick={() => startLoop()}
+              variant="contained"
+              size="small"
+              color="success"
+              disableElevation
+            >
+              send
+            </Button>
           </div>
-        </CardItem>
-      </Container>
-    </>
+        </div>
+      </CardItem>
+    </Container>
   );
 };
 
