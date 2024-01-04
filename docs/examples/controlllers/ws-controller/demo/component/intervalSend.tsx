@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { Input, TextField } from "@mui/material";
 import { loopFunc } from "@zs-ui/utils"
 import WsControllerContext from "./socketProvider";
-import { SocketStatus } from "@zs-ui/controllers";
+import { SocketStatus } from "@zs-ui/ws-controllers";
 import { ZsMessage } from "@zs-ui/components";
 import { useOnMount } from "@zs-ui/hooks";
 

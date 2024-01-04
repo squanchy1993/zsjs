@@ -13,11 +13,11 @@ This controller was designed for WebSocket communication. It was sealed with som
 
 ## Installing
 
-`npm install @zs-ui/controllers;`
+`npm install @zs-ui/ws-controllers;`
 
 ## Example
 
-`import { WsContoller } from "@zs-ui/controllers";`
+`import { WsContoller } from "@zs-ui/ws-controllers";`
 
 ```ts
   // Generate a wsContoller instance.

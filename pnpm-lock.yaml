@@ -23,15 +23,15 @@ importers:
       '@zs-ui/components':
         specifier: workspace:^
         version: link:packages/components
-      '@zs-ui/controllers':
-        specifier: workspace:^
-        version: link:packages/controllers
       '@zs-ui/hooks':
         specifier: workspace:^
         version: link:packages/hooks
       '@zs-ui/utils':
         specifier: workspace:^
         version: link:packages/utils
+      '@zs-ui/ws-controllers':
+        specifier: workspace:^
+        version: link:packages/ws-controller
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
@@ -115,6 +115,8 @@ importers:
   packages/hooks: {}
 
   packages/utils: {}
+
+  packages/ws-controller: {}
 
 packages:
 
