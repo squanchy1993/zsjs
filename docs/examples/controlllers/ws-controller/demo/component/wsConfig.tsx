@@ -41,7 +41,7 @@ const WsConfig: React.FC = () => {
     }
 
     wsController?.setOptions({ wsOptions: { address: inputRef.current?.value }});
-    wsController?.connect({});
+    wsController?.connect();
   };
   return (
     <Container>
