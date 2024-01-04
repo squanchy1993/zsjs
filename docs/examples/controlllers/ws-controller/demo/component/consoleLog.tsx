@@ -6,7 +6,7 @@ import WsControllerContext from "./socketProvider";
 import dayjs from "dayjs";
 import classNames from "classnames";
 import { useOnMount, useOnUnmount, useOnUpdate } from "@zs-ui/hooks";
-import { SocketStatus } from "@zs-ui/controllers";
+import { SocketStatus } from "@zs-ui/ws-controllers";
 
 const Container = styled.div`
   flex: 1;

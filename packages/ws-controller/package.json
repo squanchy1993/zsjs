@@ -1,8 +1,8 @@
 {
-  "name": "@zs-ui/controllers",
+  "name": "@zs-ui/ws-controllers",
   "version": "1.0.0",
   "private": true,
-  "main": "./index.ts",
+  "main": "./src/index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC"
