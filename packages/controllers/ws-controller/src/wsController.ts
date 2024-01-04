@@ -105,13 +105,13 @@ export class WsContoller {
   }
 
   async _wsConnect(
-    options: {
+    options?: {
       address?: string;
       connectTimeout?: number;
     }
   ): Promise<Object> {
     return new Promise<any>((resovle, reject) => {
-      let connectConfig = merge(this.options, options) as WsConfig
+      let connectConfig = merge(this.options, options ?? {}) as WsConfig
 
       if (this.connectStatus == SocketStatus.connected) {
         const message = 'Websocket already connected'
@@ -228,7 +228,7 @@ export class WsContoller {
    * Start connect websocket
    */
   connect(
-    options: {
+    options?: {
       address?: string;
       connectTimeout?: number;
     }
