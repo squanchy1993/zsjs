@@ -248,7 +248,7 @@ export class WsContoller {
       connectTimeout?: number;
     }
   ): XPromise<Object> {
-    this.connectingXPromise = this._reExecute<Object>({ cb: () => this._wsConnect(options), retryCount: 3, intervalTime: 2000 });
+    this.connectingXPromise = this._reExecute<Object>({ cb: () => this._wsConnect(options), retryCount: 3, intervalTime: 0 });
     return this.connectingXPromise;
   }
 
