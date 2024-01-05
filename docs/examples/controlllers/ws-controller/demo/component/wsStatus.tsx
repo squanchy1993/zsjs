@@ -4,6 +4,7 @@ import CardItem from "./cardItem";
 import { SocketStatus } from "@zs-ui/ws-controllers";
 import WsControllerContext from "./socketProvider";
 import classnames from "classnames";
+import { useOnMount, useOnUnmount } from "@zs-ui/hooks";
 
 const Container = styled.div`
   width: 100%;
@@ -37,14 +38,28 @@ const Container = styled.div`
 
 const WsStatus: React.FC = () => {
   const wsController = React.useContext(WsControllerContext);
+  const [socketStatus, setSocketStatus] = React.useState(SocketStatus.closed)
+
+  useOnMount(()=> {
+    wsController?.addEventListener<SocketStatus>('status', statusChangeReceiver)
+  })
+
+  useOnUnmount(()=> {
+    wsController?.removeEventListener('status', statusChangeReceiver)
+  })
+
+  const statusChangeReceiver = (status:SocketStatus )=> {
+    setSocketStatus(status)
+  }
+
   return (
     <Container>
       <CardItem title="connect state">
         <div className="status-group">
-          <div className={classnames('status', { 'status--closed': wsController?.connectStatus == SocketStatus.closed })}></div>
-          <div className={classnames('status', { 'status--processing': [SocketStatus.connecting, SocketStatus.closing].includes(wsController?.connectStatus) })}></div>
-          <div className={classnames('status', { 'status--connected': wsController?.connectStatus == SocketStatus.connected })}></div>
-          <span onClick={() => console.log(wsController?.connectStatus)} className="text">state: {wsController?.connectStatus}</span>
+          <div className={classnames('status', { 'status--closed': socketStatus == SocketStatus.closed })}></div>
+          <div className={classnames('status', { 'status--processing': [SocketStatus.connecting, SocketStatus.closing].includes(socketStatus) })}></div>
+          <div className={classnames('status', { 'status--connected': socketStatus == SocketStatus.connected })}></div>
+          <span onClick={() => console.log(socketStatus)} className="text">state: {socketStatus}</span>
         </div>
       </CardItem>
     </Container>
