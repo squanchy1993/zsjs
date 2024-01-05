@@ -3,6 +3,7 @@ title: ws-controller title
 group: controllers
 subGroup: general
 ---
+
 ## Instruction
 
 This controller was designed for WebSocket communication. It was sealed with some logic, such as connect timeout, reconnect, and so on.
@@ -20,33 +21,38 @@ This controller was designed for WebSocket communication. It was sealed with som
 `import { WsContoller } from "@zs-ui/ws-controllers";`
 
 ```ts
-  // Generate a wsContoller instance.
-  const wsContoller = new WsContoller({
-    wsOptions: {
-      address: 'ws://124.222.224.186:8800',  // connect address
-      onOpened: (wsCtl: WsContoller) => {
-        wsCtl.send('Hello world')  // when connect success will call OnOpened function.
-      }
+// Generate a wsContoller instance and set options.
+const wsContoller = new WsContoller({
+  wsOptions: {
+    address: "ws://xxx.xxx.xx.xx:8800", // connect address
+    onOpened: (wsCtl: WsContoller) => {
+      wsCtl.send("Hello world"); // when connect success will call OnOpened function.
     },
-    heartbeatOptions: {  // heartbeat setting.
-      handleHeartbeatMsg: (msg) => {
-        return msg.data.includes('---- heartbeat ----'); // Checkout if is a heartbeat message.
-      },
-      sendMsg: '---- heartbeat ----',
+  },
+  heartbeatOptions: {
+    // heartbeat setting.
+    handleHeartbeatMsg: (msg) => {
+      return msg.data.includes("---- heartbeat ----"); // Checkout if is a heartbeat message.
     },
-  })
+    sendMsg: "---- heartbeat ----",
+  },
+});
 
-  // Use close and connect to control wsContoller.
-  wsContoller.connect();  // start connect.
-  wsContoller.close();   // close connect.
+// Or you can set address by setOPtions methods.
+const wsContoller = new WsContoller({});
+wsContoller.setOptions({ wsOptions: { address: "ws://xxx.xxx.xx.xx:8800" } });
 
-  // listen events
-  const message = (msg) => {}
-  /// Listen message
-  wsController?.addEventListener("message", message);
+// listen events
+const message = (msg) => {};
+/// Listen message
+wsController?.addEventListener("message", message);
 
-  /// remove listener
-  wsController?.removeEventListener("message", message);
+/// remove listener
+wsController?.removeEventListener("message", message);
+
+// Use close and connect to control wsContoller.
+wsContoller.connect(); // start connect.
+wsContoller.close(); // close connect.
 ```
 
 ## Methods
@@ -110,29 +116,28 @@ This controller was designed for WebSocket communication. It was sealed with som
 #### example
 
 ```ts
-
 // Add log listener
 const logReceiver = (msg: string) => {
-  console.log(msg)
-}
-wsController?.addEventListener<string>('log', logReceiver)
+  console.log(msg);
+};
+wsController?.addEventListener<string>("log", logReceiver);
 
 // Add message listener
 const messageReceiver = (msg: MessageEvent) => {
-  console.log(msg)
-}
-wsController?.addEventListener<MessageEvent>('message', messageReceiver)
+  console.log(msg);
+};
+wsController?.addEventListener<MessageEvent>("message", messageReceiver);
 
 // Add message listener
-const statusReceiver= (msg: SocketStatus) => {
-  console.log(msg)
-}
-wsController?.addEventListener<SocketStatus>('message', statusReceiver)
+const statusReceiver = (msg: SocketStatus) => {
+  console.log(msg);
+};
+wsController?.addEventListener<SocketStatus>("message", statusReceiver);
 
 // Remove the listener before you leave.
-wsController.removeEventListener('log', logReceiver)
-wsController.removeEventListener('message', messageReceiver)
-wsController.removeEventListener('status', statusReceiver)
+wsController.removeEventListener("log", logReceiver);
+wsController.removeEventListener("message", messageReceiver);
+wsController.removeEventListener("status", statusReceiver);
 ```
 
 ## Configs
