@@ -45,15 +45,13 @@ export class WsContoller {
   heartbeat = new Heartbeat({ wsContoller: this });
   events: EventsCollect = new EventsCollect(['message', 'log', 'status'])
 
-  constructor({ wsOptions, heartbeatOptions }: { wsOptions: WsConfig, heartbeatOptions: HeartbeatConfig }) {
-    this.options = merge(this.options, wsOptions)
-    this.heartbeat.setOptions(heartbeatOptions)
+  constructor(options: { wsOptions?: WsConfig, heartbeatOptions?: HeartbeatConfig }) {
+    this.setOptions(options)
   }
 
-
-
-  setOptions(options: { wsOptions: WsConfig, heartbeatOptions?: HeartbeatConfig }) {
-    this.options = merge(this.options, options)
+  setOptions({ wsOptions, heartbeatOptions }: { wsOptions?: WsConfig, heartbeatOptions?: HeartbeatConfig }) {
+    this.options = merge(this.options, wsOptions ?? {})
+    this.heartbeat.setOptions(heartbeatOptions)
   }
 
   _setSocketInstance(address: string) {
@@ -123,36 +121,39 @@ export class WsContoller {
     }
   ): Promise<Object> {
     return new Promise<any>((resovle, reject) => {
-      let connectConfig = merge(this.options, options ?? {}) as WsConfig
+      try {
+        let connectConfig = merge(this.options, options ?? {}) as WsConfig
 
-      if (this.connectStatus == SocketStatus.connected) {
-        const message = 'Websocket already connected'
-        this.events.dispatchEvent<string>('log', message)
-        return resovle({ success: true, message })
-      }
+        if (this.connectStatus == SocketStatus.connected) {
+          const message = 'Websocket already connected'
+          this.events.dispatchEvent<string>('log', message)
+          return resovle({ success: true, message })
+        }
 
-      if (this.connectStatus !== SocketStatus.closed) {
-        const message = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`
-        this.events.dispatchEvent<string>('log', message)
-        return reject({ success: false, message })
-      }
+        if (this.connectStatus !== SocketStatus.closed) {
+          const message = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`
+          throw new Error(message)
+        }
 
-      this.connectingCb.resovle = resovle;
-      this.connectingCb.reject = reject;
+        this.connectingCb.resovle = resovle;
+        this.connectingCb.reject = reject;
 
-      // set socket instance
-      this.connectStatus = SocketStatus.connecting;
-      this._setSocketInstance(connectConfig.address);
+        // set socket instance
+        this.connectStatus = SocketStatus.connecting;
+        this._setSocketInstance(connectConfig.address);
 
-      // connecting out of time;
-      this.connectingTimer = setTimeout(() => {
+        // connecting out of time;
+        this.connectingTimer = setTimeout(() => {
+          throw new Error('Websocket connect timeout')
+        }, connectConfig.connectTimeout);
+      } catch (error) {
         this.connectStatus = SocketStatus.closed;
         wsInstance?.close();
-        const message = `Websocket connect timeout`
+        const message = `connect failed: ${error?.message ?? error}`
         this.events.dispatchEvent<string>('log', message)
-        reject({ success: false, message });
         this._clearConnect();
-      }, connectConfig.connectTimeout);
+        reject({ success: false, message });
+      }
     })
   }
 
@@ -167,7 +168,8 @@ export class WsContoller {
           const res = await cb();
           resolve(res)
         } catch (error) {
-          const message = `Websocket re-execute on ${retryCount}`
+          const message = `Because of reason [${error.message}], start re-execute on ${retryCount}`
+          console.warn(message)
           this.events.dispatchEvent<string>('log', message)
           if (retryCount !== 0) {
             if (retryCount > 0) {
@@ -177,7 +179,8 @@ export class WsContoller {
               retry();
             }, intervalTime);
           } else if (retryCount == 0) {
-            const message = `Websocket re-execute end`
+            const message = `Because of reason [${error.message}], re-execute end`
+            console.error(message)
             this.events.dispatchEvent<string>('log', message)
             return reject(error);
           }
