@@ -52,12 +52,6 @@ const Container = styled.div`
 
 function App() {
   const wsContoller = useReactive(new WsContoller({
-    wsOptions: {
-      address: 'ws://124.222.224.186:8800',
-      onOpened: (wsCtl: WsContoller) => {
-        wsCtl.send('你好 服务器')
-      }
-    },
     heartbeatOptions: {
       handleHeartbeatMsg: (msg) => {
         return msg.data.includes('---- heartbeat ----');
