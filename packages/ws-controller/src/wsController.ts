@@ -18,7 +18,17 @@ export class WsContoller {
   }
 
   // state
-  connectStatus: SocketStatus = SocketStatus.closed;
+  _connectStatus: SocketStatus = SocketStatus.closed;
+
+  get connectStatus(): SocketStatus {
+    return this._connectStatus;
+  }
+
+  set connectStatus(status: SocketStatus) {
+    this._connectStatus = status;
+    this.events.dispatchEvent<SocketStatus>('status', this._connectStatus)
+  }
+
   connectingCb: promiseCb = {
     resovle: null,
     reject: null,
@@ -33,12 +43,14 @@ export class WsContoller {
   connectingXPromise?: XPromise;
 
   heartbeat = new Heartbeat({ wsContoller: this });
-  events: EventsCollect = new EventsCollect(['message', 'log'])
+  events: EventsCollect = new EventsCollect(['message', 'log', 'status'])
 
   constructor({ wsOptions, heartbeatOptions }: { wsOptions: WsConfig, heartbeatOptions: HeartbeatConfig }) {
     this.options = merge(this.options, wsOptions)
     this.heartbeat.setOptions(heartbeatOptions)
   }
+
+
 
   setOptions(options: { wsOptions: WsConfig, heartbeatOptions?: HeartbeatConfig }) {
     this.options = merge(this.options, options)
@@ -55,7 +67,7 @@ export class WsContoller {
         that.connectStatus = SocketStatus.connected;
         const message = 'Websocket start success.'
         that.connectingCb?.resovle?.({ success: true, message });
-        that.events.dispatchEvent('log', message)
+        that.events.dispatchEvent<string>('log', message)
         that._clearConnect();
 
         that.options.onOpened?.(that);
@@ -73,7 +85,7 @@ export class WsContoller {
         that.connectStatus = SocketStatus.closed;
         const message = 'Websocket closed success'
         that.closingCb?.resovle?.({ success: true, message });
-        that.events.dispatchEvent('log', message)
+        that.events.dispatchEvent<string>('log', message)
         that._clearClose();
       }
     }
@@ -100,7 +112,7 @@ export class WsContoller {
         return;
       }
 
-      that.events.dispatchEvent('message', ev)
+      that.events.dispatchEvent<MessageEvent>('message', ev)
     }
   }
 
@@ -115,13 +127,13 @@ export class WsContoller {
 
       if (this.connectStatus == SocketStatus.connected) {
         const message = 'Websocket already connected'
-        this.events.dispatchEvent('log', message)
+        this.events.dispatchEvent<string>('log', message)
         return resovle({ success: true, message })
       }
 
       if (this.connectStatus !== SocketStatus.closed) {
         const message = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`
-        this.events.dispatchEvent('log', message)
+        this.events.dispatchEvent<string>('log', message)
         return reject({ success: false, message })
       }
 
@@ -137,7 +149,7 @@ export class WsContoller {
         this.connectStatus = SocketStatus.closed;
         wsInstance?.close();
         const message = `Websocket connect timeout`
-        this.events.dispatchEvent('log', message)
+        this.events.dispatchEvent<string>('log', message)
         reject({ success: false, message });
         this._clearConnect();
       }, connectConfig.connectTimeout);
@@ -156,7 +168,7 @@ export class WsContoller {
           resolve(res)
         } catch (error) {
           const message = `Websocket re-execute on ${retryCount}`
-          this.events.dispatchEvent('log', message)
+          this.events.dispatchEvent<string>('log', message)
           if (retryCount !== 0) {
             if (retryCount > 0) {
               retryCount--;
@@ -166,7 +178,7 @@ export class WsContoller {
             }, intervalTime);
           } else if (retryCount == 0) {
             const message = `Websocket re-execute end`
-            this.events.dispatchEvent('log', message)
+            this.events.dispatchEvent<string>('log', message)
             return reject(error);
           }
         }
@@ -188,12 +200,12 @@ export class WsContoller {
     return new Promise((resovle, reject) => {
       if (this.connectStatus == SocketStatus.closed) {
         const message = `Websocket already closed`
-        this.events.dispatchEvent('log', message)
+        this.events.dispatchEvent<string>('log', message)
         return resovle({ success: true, message })
       }
       if (this.connectStatus !== SocketStatus.connected) {
         const message = `Websocket close filed: connectStatus current is ${this.connectStatus} not in connected.`
-        this.events.dispatchEvent('log', message)
+        this.events.dispatchEvent<string>('log', message)
         return reject({ success: false, message })
       }
       this.closingCb.resovle = resovle;
@@ -207,7 +219,7 @@ export class WsContoller {
       this.closingTimer = setTimeout(() => {
         this.connectStatus = SocketStatus.closed;
         const message = `Websocket close were timeout so it forced shutdown`
-        this.events.dispatchEvent('log', message)
+        this.events.dispatchEvent<string>('log', message)
         resovle({ success: true, message });
         this._clearClose()
       }, 2000);
@@ -253,7 +265,7 @@ export class WsContoller {
   send(msg: string) {
     if (this.connectStatus !== SocketStatus.connected) {
       const message = `Websocket send error: connectStatus not in connected status.`
-      this.events.dispatchEvent('log', message)
+      this.events.dispatchEvent<string>('log', message)
       throw new Error(message);
     }
     wsInstance?.send(msg)
@@ -264,7 +276,7 @@ export class WsContoller {
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  addEventListener(eventName: 'message' | 'log', fun: (e: any) => void) {
+  addEventListener<T>(eventName: 'message' | 'log' | 'status', fun: (e: T) => void) {
     this.events.addEventListener(eventName, fun)
   }
 
@@ -273,7 +285,7 @@ export class WsContoller {
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  removeEventListener(eventName: 'message' | 'log', fun: (e: any) => void) {
+  removeEventListener(eventName: 'message' | 'log' | 'status', fun: Function) {
     this.events.removeEventListener(eventName, fun)
   }
 }

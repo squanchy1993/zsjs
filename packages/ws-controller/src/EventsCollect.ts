@@ -1,5 +1,5 @@
 export default class EventsCollect {
-  events: { [key: string]: Array<(e: any) => void> } = {}
+  events: { [key: string]: Array<Function> } = {}
   constructor(eventNames: string[]) {
     eventNames.forEach(name => {
       Reflect.set(this.events, name, [])
@@ -11,9 +11,13 @@ export default class EventsCollect {
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  addEventListener(eventName: string, fun: (e: any) => void) {
+  addEventListener(eventName: string, fun: Function) {
     if (!Reflect.has(this.events, eventName)) {
       throw new Error(`event ${eventName} doesn't exist!`)
+    }
+
+    if (this.events[eventName].includes(fun)) {
+      return;
     }
 
     this.events[eventName].push(fun)
@@ -24,7 +28,7 @@ export default class EventsCollect {
  * @param {string} eventName - The event name.
  * @param {function} fun - The callback function.
  */
-  removeEventListener(eventName: string, fun: (e: any) => void) {
+  removeEventListener(eventName: string, fun: Function) {
     if (!Reflect.has(this.events, eventName)) {
       throw new Error(`event ${eventName} doesn't exist!`)
     }
@@ -35,7 +39,7 @@ export default class EventsCollect {
     }
   }
 
-  dispatchEvent(eventName: string, data: any) {
+  dispatchEvent<T>(eventName: string, data: T) {
     if (!Reflect.has(this.events, eventName)) {
       throw new Error(`event ${eventName} doesn't exist!`)
     }

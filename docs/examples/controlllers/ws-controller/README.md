@@ -112,20 +112,27 @@ This controller was designed for WebSocket communication. It was sealed with som
 ```ts
 
 // Add log listener
-const log = (msg) => {
+const logReceiver = (msg: string) => {
   console.log(msg)
 }
-wsController?.addEventListener('log', logMessage)
+wsController?.addEventListener<string>('log', logReceiver)
 
 // Add message listener
-const message = (msg) => {
+const messageReceiver = (msg: MessageEvent) => {
   console.log(msg)
 }
-wsController?.addEventListener('message', message)
+wsController?.addEventListener<MessageEvent>('message', messageReceiver)
 
-// Remove the listener
-wsController.removeEventListener('log', logMessage)
-wsController.removeEventListener('message', message)
+// Add message listener
+const statusReceiver= (msg: SocketStatus) => {
+  console.log(msg)
+}
+wsController?.addEventListener<SocketStatus>('message', statusReceiver)
+
+// Remove the listener before you leave.
+wsController.removeEventListener('log', logReceiver)
+wsController.removeEventListener('message', messageReceiver)
+wsController.removeEventListener('status', statusReceiver)
 ```
 
 ## Configs
