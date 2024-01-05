@@ -34,14 +34,18 @@ const WsConfig: React.FC = () => {
   // const setOptions
   const inputRef = React.useRef<HTMLInputElement>();
 
-  const connect = () => {
-    if (!inputRef.current?.value) {
-      ZsMessage.error({ content: "address must input", duration: 1000 });
-      return;
-    }
+  const connect = async () => {
+    try {
+      if (!inputRef.current?.value) {
+        ZsMessage.error({ content: "address must input", duration: 1000 });
+        return;
+      }
 
-    wsController?.setOptions({ wsOptions: { address: inputRef.current?.value }});
-    wsController?.connect();
+      wsController?.setOptions({ wsOptions: { address: inputRef.current?.value } });
+      await wsController?.connect();
+    } catch (error) {
+      ZsMessage.error({ content: `${error?.message ?? error}`, duration: 2000 });
+    }
   };
   return (
     <Container>
