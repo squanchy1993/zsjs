@@ -1,4 +1,7 @@
 node_modules
-dist
 docs-dist
 lib
+dist
+
+# Build dists
+!/docs/dist
