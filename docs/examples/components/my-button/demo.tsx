@@ -1,5 +1,5 @@
 import React from 'react'
-import { MyButton } from '@zs-ui/mui-components'
+import { MyButton } from '@zsjs/mui-components'
 
 const Demo1 = () => {
   return <MyButton>demo1</MyButton>

@@ -1,5 +1,5 @@
 ---
-title: ws-controller title
+title: ws-controller
 group: controllers
 subGroup: general
 ---
@@ -14,11 +14,11 @@ This controller was designed for WebSocket communication. It was sealed with som
 
 ## Installing
 
-`npm install @zs-ui/ws-controllers;`
+`npm install @zsjs/ws-controllers;`
 
 ## Example
 
-`import { WsContoller } from "@zs-ui/ws-controllers";`
+`import { WsContoller } from "@zsjs/ws-controllers";`
 
 ```ts
 // Generate a wsContoller instance and set options.

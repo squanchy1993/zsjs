@@ -1,5 +1,5 @@
 {
-  "name": "@zs-ui/utils",
+  "name": "@zsjs/utils",
   "version": "1.0.0",
   "private": true,
   "main": "./index.ts",

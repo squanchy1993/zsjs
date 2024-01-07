@@ -1,5 +1,5 @@
 import * as React from "react";
-import { WsContoller } from "@zs-ui/ws-controllers";
+import { WsContoller } from "@zsjs/ws-controllers";
 
 const WsControllerContext = React.createContext<WsContoller | null>(null);
 

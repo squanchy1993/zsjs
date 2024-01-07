@@ -1,5 +1,5 @@
 {
-  "name": "@zs-ui/hooks",
+  "name": "@zsjs/hooks",
   "version": "1.0.0",
   "private": true,
   "main": "./index.ts",
