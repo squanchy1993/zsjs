@@ -5,7 +5,7 @@ import { Radio, FormControlLabel, Button, Checkbox } from "@mui/material";
 import WsControllerContext from "./socketProvider";
 import dayjs from "dayjs";
 import classNames from "classnames";
-import { useOnMount, useOnUnmount, useOnUpdate } from "@zs-ui/hooks";
+import { useOnMount, useOnUnmount, useOnUpdate } from "@zsjs/hooks";
 
 const Container = styled.div`
   flex: 1;

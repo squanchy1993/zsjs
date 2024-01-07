@@ -1,5 +1,5 @@
 {
-  "name": "@zs-ui/mui-components",
+  "name": "@zsjs/mui-components",
   "version": "0.0.1",
   "private": true,
   "main": "./index.ts",

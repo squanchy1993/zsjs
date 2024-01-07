@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import * as React from "react";
 import CardItem from "./cardItem";
-import { SocketStatus } from "@zs-ui/ws-controllers";
+import { SocketStatus } from "@zsjs/ws-controllers";
 import WsControllerContext from "./socketProvider";
 import classnames from "classnames";
-import { useOnMount, useOnUnmount } from "@zs-ui/hooks";
+import { useOnMount, useOnUnmount } from "@zsjs/hooks";
 
 const Container = styled.div`
   width: 100%;
