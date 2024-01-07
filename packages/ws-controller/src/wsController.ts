@@ -40,7 +40,7 @@ export class WsContoller {
   pause: boolean = false;
   connectingTimer: NodeJS.Timeout | null = null;
   closingTimer: NodeJS.Timeout | null = null;
-  connectingXPromise?: XPromise;
+  connectingXPromise?: XPromise<Object>;
 
   heartbeat = new Heartbeat({ wsContoller: this });
   events: EventsCollect = new EventsCollect(['message', 'log', 'status'])
@@ -149,7 +149,12 @@ export class WsContoller {
       } catch (error) {
         this.connectStatus = SocketStatus.closed;
         wsInstance?.close();
-        const message = `connect failed: ${error?.message ?? error}`
+
+        let errorMsg = `${error}`
+        if(error instanceof Error){
+          errorMsg = error.message
+        }
+        const message = `connect failed: ${errorMsg}`
         this.events.dispatchEvent<string>('log', message)
         this._clearConnect();
         reject({ success: false, message });
@@ -168,7 +173,12 @@ export class WsContoller {
           const res = await cb();
           resolve(res)
         } catch (error) {
-          const message = `Because of reason [${error.message}], start re-execute on ${retryCount}`
+          let errorMsg = `${error}`
+          if(error instanceof Error){
+            errorMsg = error.message
+          }
+
+          const message = `Because of reason [${errorMsg}], start re-execute on ${retryCount}`
           console.warn(message)
           this.events.dispatchEvent<string>('log', message)
           if (retryCount !== 0) {
@@ -179,7 +189,7 @@ export class WsContoller {
               retry();
             }, intervalTime);
           } else if (retryCount == 0) {
-            const message = `Because of reason [${error.message}], re-execute end`
+            const message = `Because of reason [${errorMsg}], re-execute end`
             console.error(message)
             this.events.dispatchEvent<string>('log', message)
             return reject(error);
