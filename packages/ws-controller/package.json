@@ -2,8 +2,14 @@
   "name": "@zs-ui/ws-controllers",
   "version": "1.0.0",
   "private": true,
-  "main": "./src/index.ts",
+  "main": "./index.ts",
+  "typings": "dist/types/index.d.ts",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "build": "rimraf dist && run-p build:*",
+    "build:vite": "vite build", 
+    "build:types": "tsc --skipLibCheck --declaration --emitDeclarationOnly --declarationDir dist/types"
+  }
 }
