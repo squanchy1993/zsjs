@@ -1,15 +1,29 @@
 {
-  "name": "@zs-ui/ws-controllers",
-  "version": "1.0.0",
-  "private": true,
-  "main": "./index.ts",
+  "name": "@zsjs/ws-controllers",
+  "version": "0.0.2",
+  "main": "dist/index.mjs",
   "typings": "dist/types/index.d.ts",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "./README.md",
+    "../../docs/examples/controlllers/ws-controller/README.md",
+    "./dist"
+  ],
+  "keywords": [
+    "Websocket"
+  ],
+  "author": {
+    "name": "squanchy1993",
+    "email": "squanchy@yeah.net",
+    "url": "https://github.com/squanchy1993"
+  },
+  "repository": "https://github.com/squanchy1993/zs-ui/tree/master/packages/ws-controller",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "rimraf dist && run-p build:*",
-    "build:vite": "vite build", 
+    "build:vite": "vite build",
     "build:types": "tsc --skipLibCheck --declaration --emitDeclarationOnly --declarationDir dist/types"
   }
 }
