@@ -7,6 +7,7 @@ export default defineConfig({
     react(),
   ],
   build: {
+    minify: true,
     lib: {
       entry: path.resolve(__dirname, './index.ts'),
       name: 'wsContoller',
