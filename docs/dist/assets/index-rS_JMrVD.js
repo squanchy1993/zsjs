@@ -9094,17 +9094,17 @@ reactJsxRuntime_production_min.jsxs = q;
 var jsxRuntimeExports = jsxRuntime.exports;
 const pages = {};
 pages["/"] = {};
-pages["/"].data = () => __vitePreload(() => import("./index__-rh65KQxl.js"), true ? __vite__mapDeps([]) : void 0);
+pages["/"].data = () => __vitePreload(() => import("./index__-FmCNtT7A.js"), true ? __vite__mapDeps([]) : void 0);
 pages["/"].staticData = { "main": { "title": "Index Page Title", "sourceType": "js" } };
 pages["/md-test1"] = {};
-pages["/md-test1"].data = () => __vitePreload(() => import("./md-test1-37L9A5E7.js"), true ? __vite__mapDeps([0,1]) : void 0);
+pages["/md-test1"].data = () => __vitePreload(() => import("./md-test1-QanUJSEk.js"), true ? __vite__mapDeps([0,1]) : void 0);
 pages["/md-test1"].staticData = { "main": { "sourceType": "md", "title": "Markdown Test Page1" } };
-pages["/examples/controlllers/ws-controller"] = {};
-pages["/examples/controlllers/ws-controller"].data = () => __vitePreload(() => import("./ws-controller-cuD-L1af.js"), true ? __vite__mapDeps([]) : void 0);
-pages["/examples/controlllers/ws-controller"].staticData = { "main": { "title": "ws-controller", "group": "controllers", "subGroup": "general", "sourceType": "md" } };
 pages["/examples/components/my-button"] = {};
-pages["/examples/components/my-button"].data = () => __vitePreload(() => import("./my-button-XP5Q_gsa.js"), true ? __vite__mapDeps([]) : void 0);
+pages["/examples/components/my-button"].data = () => __vitePreload(() => import("./my-button-EmbxFeBB.js"), true ? __vite__mapDeps([]) : void 0);
 pages["/examples/components/my-button"].staticData = { "main": { "title": "Button title", "subGroup": "general", "sourceType": "md" } };
+pages["/examples/controlllers/ws-controller"] = {};
+pages["/examples/controlllers/ws-controller"].data = () => __vitePreload(() => import("./ws-controller-AD2ODqRx.js"), true ? __vite__mapDeps([]) : void 0);
+pages["/examples/controlllers/ws-controller"].staticData = { "main": { "title": "ws-controller", "group": "controllers", "subGroup": "general", "sourceType": "md" } };
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -52804,7 +52804,7 @@ function createTheme(originalThemeConfig) {
     return HOC;
   }
 }
-registerSSRPlugin(() => __vitePreload(() => import("./ssrPlugin-Btd5m74f.js"), true ? __vite__mapDeps([]) : void 0).then((mod) => mod.default));
+registerSSRPlugin(() => __vitePreload(() => import("./ssrPlugin-cc_vSjYL.js"), true ? __vite__mapDeps([]) : void 0).then((mod) => mod.default));
 const Component404 = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/", replace: true });
 };
@@ -52905,7 +52905,7 @@ const initialPagePaths = Object.keys(pages);
     const [data, set2] = reactExports.useState();
     reactExports.useEffect(() => {
       setTimeout(() => {
-        __vitePreload(() => import("./allPagesOutlines-RWzBhM-W.js"), true ? __vite__mapDeps([2,1]) : void 0).then((mod) => {
+        __vitePreload(() => import("./allPagesOutlines-IzegkJjO.js"), true ? __vite__mapDeps([2,1]) : void 0).then((mod) => {
           set2(mod);
         });
       }, timeout);
@@ -53022,9 +53022,9 @@ root.render(/* @__PURE__ */ jsxRuntimeExports.jsx(ClientAppWrapper, {
   children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {})
 }));
 export {
-  React__default as R,
+  React as R,
   StyleProvider as S,
-  React as a,
+  React__default as a,
   ReactDOM as b,
   reactDomExports as c,
   createRoot$1 as d,
@@ -53038,7 +53038,7 @@ export {
 };
 function __vite__mapDeps(indexes) {
   if (!__vite__mapDeps.viteFileDeps) {
-    __vite__mapDeps.viteFileDeps = ["assets/md-test1-37L9A5E7.js","assets/md-test1_-MpCnuy21.js","assets/allPagesOutlines-RWzBhM-W.js"]
+    __vite__mapDeps.viteFileDeps = ["assets/md-test1-QanUJSEk.js","assets/md-test1_-MpCnuy21.js","assets/allPagesOutlines-IzegkJjO.js"]
   }
   return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
 }

@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "cd docs && npm run dev",
     "dev-pnpm": "pnpm run --filter library-demos dev",
-    "dev-npm": "npm run dev --workspace library-demos"
+    "dev-npm": "npm run dev --workspace library-demos",
+    "build:docs-react": "pnpm i && cd docs && npm run build"
   },
   "engines": {
     "node": ">= 16"
