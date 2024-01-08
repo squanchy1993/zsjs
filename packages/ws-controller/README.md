@@ -1,5 +1,5 @@
 ---
-title: ws-controller title
+title: ws-controller
 group: controllers
 subGroup: general
 ---
@@ -11,6 +11,7 @@ This controller was designed for WebSocket communication. It was sealed with som
 ## Demos
 
 <Demo src="./demo/index.tsx" />
+[WsController'demo](https://zsjs.vercel.app/examples/controlllers/ws-controller)
 
 ## Installing
 
