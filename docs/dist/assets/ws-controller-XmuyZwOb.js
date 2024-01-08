@@ -1,4 +1,4 @@
-import { R as React, r as reactExports, j as jsxRuntimeExports, a as React__default, b as ReactDOM, c as reactDomExports, d as createRoot, g as getDefaultExportFromCjs, e as commonjsGlobal, u as useMDXComponents } from "./index-rS_JMrVD.js";
+import { R as React, r as reactExports, j as jsxRuntimeExports, a as React__default, b as ReactDOM, c as reactDomExports, d as createRoot, g as getDefaultExportFromCjs, e as commonjsGlobal, u as useMDXComponents } from "./index-IMp6r2Pi.js";
 const common = {
   black: "#000",
   white: "#fff"

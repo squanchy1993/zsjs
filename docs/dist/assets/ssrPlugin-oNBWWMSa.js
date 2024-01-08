@@ -1,4 +1,4 @@
-import { f as createCache, a as React__default, S as StyleProvider, h as extractStyle } from "./index-rS_JMrVD.js";
+import { f as createCache, a as React__default, S as StyleProvider, h as extractStyle } from "./index-IMp6r2Pi.js";
 var ssrPlugin = {
   id: "vite-pages-theme-doc-antd-ssr",
   prepare(app) {
