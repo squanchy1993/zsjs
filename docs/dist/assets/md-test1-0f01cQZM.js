@@ -1,5 +1,5 @@
 import { p as pageOutline_1_0 } from "./md-test1_-MpCnuy21.js";
-import { u as useMDXComponents, j as jsxRuntimeExports } from "./index-rS_JMrVD.js";
+import { u as useMDXComponents, j as jsxRuntimeExports } from "./index-IMp6r2Pi.js";
 function _createMdxContent(props) {
   const _components = Object.assign({
     h1: "h1",

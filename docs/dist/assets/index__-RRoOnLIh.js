@@ -1,4 +1,4 @@
-import { j as jsxRuntimeExports } from "./index-rS_JMrVD.js";
+import { j as jsxRuntimeExports } from "./index-IMp6r2Pi.js";
 const Page = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Home page" }),

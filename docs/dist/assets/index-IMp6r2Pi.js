@@ -9094,16 +9094,16 @@ reactJsxRuntime_production_min.jsxs = q;
 var jsxRuntimeExports = jsxRuntime.exports;
 const pages = {};
 pages["/"] = {};
-pages["/"].data = () => __vitePreload(() => import("./index__-FmCNtT7A.js"), true ? __vite__mapDeps([]) : void 0);
+pages["/"].data = () => __vitePreload(() => import("./index__-RRoOnLIh.js"), true ? __vite__mapDeps([]) : void 0);
 pages["/"].staticData = { "main": { "title": "Index Page Title", "sourceType": "js" } };
 pages["/md-test1"] = {};
-pages["/md-test1"].data = () => __vitePreload(() => import("./md-test1-QanUJSEk.js"), true ? __vite__mapDeps([0,1]) : void 0);
+pages["/md-test1"].data = () => __vitePreload(() => import("./md-test1-0f01cQZM.js"), true ? __vite__mapDeps([0,1]) : void 0);
 pages["/md-test1"].staticData = { "main": { "sourceType": "md", "title": "Markdown Test Page1" } };
 pages["/examples/components/my-button"] = {};
-pages["/examples/components/my-button"].data = () => __vitePreload(() => import("./my-button-EmbxFeBB.js"), true ? __vite__mapDeps([]) : void 0);
+pages["/examples/components/my-button"].data = () => __vitePreload(() => import("./my-button-y3FEP5a1.js"), true ? __vite__mapDeps([]) : void 0);
 pages["/examples/components/my-button"].staticData = { "main": { "title": "Button title", "subGroup": "general", "sourceType": "md" } };
 pages["/examples/controlllers/ws-controller"] = {};
-pages["/examples/controlllers/ws-controller"].data = () => __vitePreload(() => import("./ws-controller-AD2ODqRx.js"), true ? __vite__mapDeps([]) : void 0);
+pages["/examples/controlllers/ws-controller"].data = () => __vitePreload(() => import("./ws-controller-XmuyZwOb.js"), true ? __vite__mapDeps([]) : void 0);
 pages["/examples/controlllers/ws-controller"].staticData = { "main": { "title": "ws-controller", "group": "controllers", "subGroup": "general", "sourceType": "md" } };
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -52804,7 +52804,7 @@ function createTheme(originalThemeConfig) {
     return HOC;
   }
 }
-registerSSRPlugin(() => __vitePreload(() => import("./ssrPlugin-cc_vSjYL.js"), true ? __vite__mapDeps([]) : void 0).then((mod) => mod.default));
+registerSSRPlugin(() => __vitePreload(() => import("./ssrPlugin-oNBWWMSa.js"), true ? __vite__mapDeps([]) : void 0).then((mod) => mod.default));
 const Component404 = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/", replace: true });
 };
@@ -52822,8 +52822,7 @@ const initialTheme = createTheme({
     },
     {
       label: "Components",
-      path: "/examples/components/my-button",
-      activeIfMatch: "/examples/components"
+      path: "/examples/components/my-button"
     },
     {
       label: "Controllers",
@@ -53038,7 +53037,7 @@ export {
 };
 function __vite__mapDeps(indexes) {
   if (!__vite__mapDeps.viteFileDeps) {
-    __vite__mapDeps.viteFileDeps = ["assets/md-test1-QanUJSEk.js","assets/md-test1_-MpCnuy21.js","assets/allPagesOutlines-IzegkJjO.js"]
+    __vite__mapDeps.viteFileDeps = ["assets/md-test1-0f01cQZM.js","assets/md-test1_-MpCnuy21.js","assets/allPagesOutlines-IzegkJjO.js"]
   }
   return indexes.map((i) => __vite__mapDeps.viteFileDeps[i])
 }

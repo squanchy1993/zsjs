@@ -1,4 +1,4 @@
-import { j as jsxRuntimeExports, u as useMDXComponents } from "./index-rS_JMrVD.js";
+import { j as jsxRuntimeExports, u as useMDXComponents } from "./index-IMp6r2Pi.js";
 const MyButton = ({ className, ...props }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "fasdfasd" });
 };
