@@ -1,7 +1,7 @@
 {
   "name": "@zsjs/ws-controllers",
   "version": "0.1.4",
-  "main": "dist/index.mjs",
+  "main": "dist/esm/index.js",
   "typings": "dist/types/src/index.d.ts",
   "files": [
     "./README.md",
@@ -21,9 +21,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "typescript": "^5.3.3"
+  },
   "scripts": {
-    "build": "rimraf dist && run-p build:*",
-    "build:vite": "vite build",
-    "build:types": "tsc --skipLibCheck --declaration --emitDeclarationOnly --declarationDir dist/types"
+    "build:cjs": "tsc -p ./pack/tsconfig.commonjs.json",
+    "build:module": "tsc -p ./pack/tsconfig.module.json",
+    "build:umd": "tsc -p ./pack/tsconfig.umd.json"
   }
 }

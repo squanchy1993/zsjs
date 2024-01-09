@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "umd",  // esnext, es2020
+    "target": "es5",
+    "lib": ["esnext", "dom"],
+    "outDir": "../dist/umd",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "../dist/types", // 生成相应的 .d.ts文件的存放目录
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+  },
+  "include": ["../src/**/*.ts"],
+  "exclude": ["**/node_modules/**"],
+}
