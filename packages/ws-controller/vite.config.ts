@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, './src/index.ts'),
       name: 'index',
-      formats: ['es'],
+      formats: ['es', 'cjs', 'umd'],
       fileName: "index"
     },
   }
