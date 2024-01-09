@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     minify: true,
     lib: {
-      entry: path.resolve(__dirname, './index.ts'),
+      entry: path.resolve(__dirname, './src/index.ts'),
       name: 'wsContoller',
       formats: ['iife'],
       fileName: () => "index.js"
