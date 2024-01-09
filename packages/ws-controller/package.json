@@ -1,8 +1,8 @@
 {
   "name": "@zsjs/ws-controllers",
   "version": "0.1.4",
-  "main": "dist/index.js",
-  "typings": "dist/types/index.d.ts",
+  "main": "dist/index.mjs",
+  "typings": "dist/types/src/index.d.ts",
   "files": [
     "./README.md",
     "../../docs/examples/controlllers/ws-controller/README.md",
