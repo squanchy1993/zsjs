@@ -1,16 +1,28 @@
 {
   "name": "@zsjs/mui-components",
   "version": "0.0.1",
-  "private": true,
-  "main": "./src/index.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/types/src/index.d.ts",
   "scripts": {
     "build": "rimraf dist && run-p build:*",
     "build:vite": "vite build",
     "build:types": "tsc --skipLibCheck --declaration --emitDeclarationOnly --declarationDir dist/types"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "./README.md",
+    "dist"
+  ],
+  "keywords": ["mui-components"],
+  "author": {
+    "name": "squanchy1993",
+    "email": "squanchy@yeah.net",
+    "url": "https://github.com/squanchy1993"
+  },
+  "repository": "https://github.com/squanchy1993/zs-ui/tree/master/packages/mui-components",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "rimraf": "^4.4.1",
     "typescript": "^5.1.3",
