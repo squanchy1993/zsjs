@@ -11,8 +11,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, './src/index.ts'),
       name: 'muiComponents',
-      formats: ['iife'],
-      fileName: () => "index.js"
+      formats: ['es'],
+      fileName: 'index'
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
