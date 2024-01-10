@@ -1,6 +1,6 @@
 {
-  "name": "@zsjs/ws-controllers",
-  "version": "0.1.4",
+  "name": "@zsjs/ws-controller",
+  "version": "0.1.5",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "unpkg": "dist/index.umd.js",
