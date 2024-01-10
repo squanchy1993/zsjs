@@ -17,13 +17,19 @@ export default createTheme({
     },
     {
       label: 'Components',
-      path: '/examples/components/my-button',
-      activeIfMatch: '/examples/components',
+      path: '/views/components/zs-message',
+      activeIfMatch: '/views/components',
+      children: [
+        {
+          label: 'zs-message',
+          path: '/views/components/zs-message',
+        },
+      ]
     },
     {
       label: 'Controllers',
-      path: '/examples/controlllers/ws-controller',
-      activeIfMatch: '/examples/controllers',
+      path: '/views/controlllers/ws-controller',
+      activeIfMatch: '/views/controllers',
     },
     { label: 'Vite', href: 'https://github.com/vitejs/vite' },
     {
