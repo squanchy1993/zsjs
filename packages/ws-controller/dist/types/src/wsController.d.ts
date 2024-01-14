@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { XPromise, SocketStatus, promiseCb, HeartbeatConfig, WsConfig } from "./types";
+import { SocketStatus, promiseCb, HeartbeatConfig, WsConfig } from "./types";
 import EventsCollect from "./EventsCollect";
 import { Heartbeat } from "./Heartbeat";
 export declare class WsContoller {
@@ -12,14 +12,17 @@ export declare class WsContoller {
     pause: boolean;
     connectingTimer: NodeJS.Timeout | null;
     closingTimer: NodeJS.Timeout | null;
-    connectingXPromise?: XPromise<Object>;
+    connectingXPromise?: {
+        promise: Promise<any>;
+        cancel: Function;
+    };
     heartbeat: Heartbeat;
     events: EventsCollect;
     constructor(options: {
         wsOptions?: WsConfig;
         heartbeatOptions?: HeartbeatConfig;
     });
-    setOptions({ wsOptions, heartbeatOptions }: {
+    setOptions({ wsOptions, heartbeatOptions, }: {
         wsOptions?: WsConfig;
         heartbeatOptions?: HeartbeatConfig;
     }): void;
@@ -28,11 +31,6 @@ export declare class WsContoller {
         address?: string;
         connectTimeout?: number;
     }): Promise<Object>;
-    _reExecute<T>({ cb, retryCount, intervalTime }: {
-        cb: (params?: any) => Promise<any>;
-        retryCount: number;
-        intervalTime?: number;
-    }): XPromise<T>;
     _clearConnect(): void;
     _wsClose(): Promise<Object>;
     _clearClose(): void;
@@ -42,7 +40,7 @@ export declare class WsContoller {
     connect(options?: {
         address?: string;
         connectTimeout?: number;
-    }): XPromise<Object>;
+    }): Promise<Object>;
     /**
      * Close websocket
      */
@@ -57,12 +55,12 @@ export declare class WsContoller {
      * @param {string} eventName - The event name.
      * @param {function} fun - The callback function.
      */
-    addEventListener<T>(eventName: 'message' | 'log' | 'status', fun: (e: T) => void): void;
+    addEventListener<T>(eventName: "message" | "log" | "status", fun: (e: T) => void): void;
     /**
      * remove a callback function
      * @param {string} eventName - The event name.
      * @param {function} fun - The callback function.
      */
-    removeEventListener(eventName: 'message' | 'log' | 'status', fun: Function): void;
+    removeEventListener(eventName: "message" | "log" | "status", fun: Function): void;
 }
 //# sourceMappingURL=wsController.d.ts.map

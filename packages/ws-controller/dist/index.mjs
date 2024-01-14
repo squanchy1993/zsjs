@@ -1,46 +1,46 @@
-const p = (r) => {
-  if (typeof r == "object" && r !== null) {
+const T = (i) => {
+  if (typeof i == "object" && i !== null) {
     if (typeof Object.getPrototypeOf == "function") {
-      const t = Object.getPrototypeOf(r);
-      return t === Object.prototype || t === null;
+      const e = Object.getPrototypeOf(i);
+      return e === Object.prototype || e === null;
     }
-    return Object.prototype.toString.call(r) === "[object Object]";
+    return Object.prototype.toString.call(i) === "[object Object]";
   }
   return !1;
-}, h = (...r) => r.reduce((t, e) => {
-  if (Array.isArray(e))
+}, l = (...i) => i.reduce((e, t) => {
+  if (Array.isArray(t))
     throw new TypeError("Arguments provided to ts-deepmerge must be objects, not arrays.");
-  return Object.keys(e).forEach((s) => {
-    ["__proto__", "constructor", "prototype"].includes(s) || (Array.isArray(t[s]) && Array.isArray(e[s]) ? t[s] = h.options.mergeArrays ? h.options.uniqueArrayItems ? Array.from(new Set(t[s].concat(e[s]))) : [...t[s], ...e[s]] : e[s] : p(t[s]) && p(e[s]) ? t[s] = h(t[s], e[s]) : t[s] = e[s] === void 0 ? h.options.allowUndefinedOverrides ? e[s] : t[s] : e[s]);
-  }), t;
-}, {}), m = {
+  return Object.keys(t).forEach((s) => {
+    ["__proto__", "constructor", "prototype"].includes(s) || (Array.isArray(e[s]) && Array.isArray(t[s]) ? e[s] = l.options.mergeArrays ? l.options.uniqueArrayItems ? Array.from(new Set(e[s].concat(t[s]))) : [...e[s], ...t[s]] : t[s] : T(e[s]) && T(t[s]) ? e[s] = l(e[s], t[s]) : e[s] = t[s] === void 0 ? l.options.allowUndefinedOverrides ? t[s] : e[s] : t[s]);
+  }), e;
+}, {}), g = {
   allowUndefinedOverrides: !0,
   mergeArrays: !0,
   uniqueArrayItems: !0
 };
-h.options = m;
-h.withOptions = (r, ...t) => {
-  h.options = Object.assign(Object.assign({}, m), r);
-  const e = h(...t);
-  return h.options = m, e;
+l.options = g;
+l.withOptions = (i, ...e) => {
+  l.options = Object.assign(Object.assign({}, g), i);
+  const t = l(...e);
+  return l.options = g, t;
 };
-class v extends Promise {
-  constructor(t, e) {
+class E extends Promise {
+  constructor(e, t) {
     let s, n;
-    super((i, o) => {
-      t(i, o), s = i, n = o;
-    }), this.resolve = s, this.reject = n, this.cancelPromise = e;
+    super((o, c) => {
+      e(o, c), s = o, n = c;
+    }), this.resolve = s, this.reject = n, this.cancelPromise = t;
   }
   cancel() {
-    var t, e;
-    (t = this.reject) == null || t.call(this, "promise has been canceled"), (e = this.cancelPromise) == null || e.call(this);
+    var e, t;
+    (e = this.reject) == null || e.call(this, "promise has been canceled"), (t = this.cancelPromise) == null || t.call(this);
   }
 }
-var c = /* @__PURE__ */ ((r) => (r.closed = "closed", r.connecting = "connecting", r.connected = "connected", r.closing = "closing", r))(c || {});
-class T {
-  constructor(t) {
-    this.events = {}, t.forEach((e) => {
-      Reflect.set(this.events, e, []);
+var r = /* @__PURE__ */ ((i) => (i.closed = "closed", i.connecting = "connecting", i.connected = "connected", i.closing = "closing", i))(r || {});
+class w {
+  constructor(e) {
+    this.events = {}, e.forEach((t) => {
+      Reflect.set(this.events, t, []);
     });
   }
   /**
@@ -48,49 +48,96 @@ class T {
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  addEventListener(t, e) {
-    if (!Reflect.has(this.events, t))
-      throw new Error(`event ${t} doesn't exist!`);
-    this.events[t].includes(e) || this.events[t].push(e);
+  addEventListener(e, t) {
+    if (!Reflect.has(this.events, e))
+      throw new Error(`event ${e} doesn't exist!`);
+    this.events[e].includes(t) || this.events[e].push(t);
   }
   /**
   * remove a callback function
   * @param {string} eventName - The event name.
   * @param {function} fun - The callback function.
   */
-  removeEventListener(t, e) {
-    if (!Reflect.has(this.events, t))
-      throw new Error(`event ${t} doesn't exist!`);
-    const s = this.events[t].indexOf(e);
-    s !== -1 && this.events[t].splice(s, 1);
+  removeEventListener(e, t) {
+    if (!Reflect.has(this.events, e))
+      throw new Error(`event ${e} doesn't exist!`);
+    const s = this.events[e].indexOf(t);
+    s !== -1 && this.events[e].splice(s, 1);
   }
-  dispatchEvent(t, e) {
-    if (!Reflect.has(this.events, t))
-      throw new Error(`event ${t} doesn't exist!`);
-    this.events[t].forEach((s) => s(e));
+  dispatchEvent(e, t) {
+    if (!Reflect.has(this.events, e))
+      throw new Error(`event ${e} doesn't exist!`);
+    this.events[e].forEach((s) => s(t));
   }
 }
-class b {
-  constructor({ wsContoller: t, options: e }) {
+function b({
+  cb: i,
+  retryCount: e,
+  intervalTime: t,
+  event: s
+}) {
+  let n = !1, o = () => {
+  };
+  return {
+    promise: new Promise(async (d, u) => {
+      o = () => {
+        e = 0, n = !0;
+        const h = "Because of reason [user cancel], re-execute end";
+        return console.warn(h), s(h), u(new Error(h));
+      };
+      const f = async () => {
+        try {
+          const h = await i();
+          d(h);
+        } catch (h) {
+          if (n)
+            return;
+          let m = `${h}`;
+          h instanceof Error && (m = h.message);
+          const p = `Because of reason [${m}], start re-execute on ${e}`;
+          if (console.warn(p), s(p), e == 0) {
+            const v = `Because of reason [${m}], re-execute end`;
+            console.error(v), s(v), u(h);
+          } else
+            e !== 0 && (e > 0 && e--, setTimeout(() => {
+              f();
+            }, t));
+        }
+      };
+      f();
+    }),
+    cancel: o
+  };
+}
+class C {
+  constructor({
+    wsContoller: e,
+    options: t
+  }) {
     this.sendTimer = null, this.reSendTimer = null, this.connectingXPromise = null, this.startTime = 0, this.options = {
       handleHeartbeatMsg: (s) => !0,
       timeout: 5e3,
       intervalTime: 5e3,
       sendMsg: "---- heartbeat ----"
-    }, this.wsContoller = t, this.setOptions(e);
+    }, this.wsContoller = e, this.setOptions(t);
   }
-  setOptions(t = {}) {
-    this.options = h(this.options, t);
+  setOptions(e = {}) {
+    this.options = l(this.options, e);
   }
   send() {
-    const t = `heartbeat send message: ${this.options.sendMsg}`;
-    this.wsContoller.events.dispatchEvent("log", t), this.startTime = (/* @__PURE__ */ new Date()).getTime(), this.wsContoller.send(this.options.sendMsg), this.sendTimer && clearTimeout(this.sendTimer), this.sendTimer = setTimeout(async () => {
-      this.wsContoller.connectStatus == c.connected && await this.wsContoller._wsClose(), this.connectingXPromise = this.wsContoller._reExecute({ cb: () => this.wsContoller._wsConnect({}), retryCount: -1, intervalTime: 2e3 });
+    const e = `heartbeat send message: ${this.options.sendMsg}`;
+    this.wsContoller.events.dispatchEvent("log", e), this.startTime = (/* @__PURE__ */ new Date()).getTime(), this.wsContoller.send(this.options.sendMsg), this.sendTimer && clearTimeout(this.sendTimer), this.sendTimer = setTimeout(async () => {
+      this.wsContoller.connectStatus == r.connected && await this.wsContoller._wsClose(), this.connectingXPromise = b({
+        cb: () => this.wsContoller._wsConnect({}),
+        retryCount: -1,
+        intervalTime: 2e3,
+        event: (t) => this.wsContoller.events.dispatchEvent("log", t)
+      });
     }, this.options.timeout);
   }
-  received(t) {
-    var i, o;
-    if (!this.sendTimer || !((o = (i = this.options).handleHeartbeatMsg) == null ? void 0 : o.call(i, t)))
+  received(e) {
+    var o, c;
+    if (!this.sendTimer || !((c = (o = this.options).handleHeartbeatMsg) == null ? void 0 : c.call(o, e)))
       return;
     let s = (/* @__PURE__ */ new Date()).getTime();
     const n = `heartbeat started at ${this.startTime}, completed in ${s}', duration is ${(s - this.startTime) / 1e3} seconds`;
@@ -103,8 +150,8 @@ class b {
   }
 }
 let a = null;
-class w {
-  constructor(t) {
+class S {
+  constructor(e) {
     this.options = {
       address: "",
       connectTimeout: 5e3,
@@ -112,120 +159,100 @@ class w {
       retry: 2,
       onOpened: function() {
       }
-    }, this._connectStatus = c.closed, this.connectingCb = {
+    }, this._connectStatus = r.closed, this.connectingCb = {
       resovle: null,
       reject: null
     }, this.closingCb = {
       resovle: null,
       reject: null
-    }, this.pause = !1, this.connectingTimer = null, this.closingTimer = null, this.heartbeat = new b({ wsContoller: this }), this.events = new T(["message", "log", "status"]), this.setOptions(t);
+    }, this.pause = !1, this.connectingTimer = null, this.closingTimer = null, this.heartbeat = new C({ wsContoller: this }), this.events = new w(["message", "log", "status"]), this.setOptions(e);
   }
   get connectStatus() {
     return this._connectStatus;
   }
-  set connectStatus(t) {
-    this._connectStatus = t, this.events.dispatchEvent("status", this._connectStatus);
+  set connectStatus(e) {
+    this._connectStatus = e, this.events.dispatchEvent("status", this._connectStatus);
   }
-  setOptions({ wsOptions: t, heartbeatOptions: e }) {
-    this.options = h(this.options, t ?? {}), this.heartbeat.setOptions(e);
+  setOptions({
+    wsOptions: e,
+    heartbeatOptions: t
+  }) {
+    this.options = l(this.options, e ?? {}), this.heartbeat.setOptions(t);
   }
-  _setSocketInstance(t) {
-    const e = this;
-    a = new WebSocket(t), a.onopen = function(s) {
-      var n, i, o, u;
-      if (e.connectStatus == c.connecting) {
-        e.connectStatus = c.connected;
-        const l = "Websocket start success.";
-        (i = (n = e.connectingCb) == null ? void 0 : n.resovle) == null || i.call(n, { success: !0, message: l }), e.events.dispatchEvent("log", l), e._clearConnect(), (u = (o = e.options).onOpened) == null || u.call(o, e), setTimeout(() => {
-          e.heartbeat.send();
+  _setSocketInstance(e) {
+    const t = this;
+    a = new WebSocket(e), a.onopen = function(s) {
+      var n, o, c, d;
+      if (t.connectStatus == r.connecting) {
+        t.connectStatus = r.connected;
+        const u = "Websocket start success.";
+        (o = (n = t.connectingCb) == null ? void 0 : n.resovle) == null || o.call(n, { success: !0, message: u }), t.events.dispatchEvent("log", u), t._clearConnect(), (d = (c = t.options).onOpened) == null || d.call(c, t), setTimeout(() => {
+          t.heartbeat.send();
         }, 1e3);
       }
     }, a.onclose = function(s) {
-      var n, i;
-      if (e.connectStatus == c.closing) {
-        e.connectStatus = c.closed;
-        const o = "Websocket closed success";
-        (i = (n = e.closingCb) == null ? void 0 : n.resovle) == null || i.call(n, { success: !0, message: o }), e.events.dispatchEvent("log", o), e._clearClose();
+      var n, o;
+      if (t.connectStatus == r.closing) {
+        t.connectStatus = r.closed;
+        const c = "Websocket closed success";
+        (o = (n = t.closingCb) == null ? void 0 : n.resovle) == null || o.call(n, { success: !0, message: c }), t.events.dispatchEvent("log", c), t._clearClose();
       }
     }, a.onerror = function(s) {
-      var n, i, o, u;
-      if (e.connectStatus == c.connecting) {
-        e.connectStatus = c.closed;
-        const l = "Websocket start error";
-        (i = (n = e.connectingCb) == null ? void 0 : n.reject) == null || i.call(n, { success: !1, message: l }), e.events.dispatchEvent("log", l), e._clearConnect();
+      var n, o, c, d;
+      if (t.connectStatus == r.connecting) {
+        t.connectStatus = r.closed;
+        const u = "Websocket start error";
+        (o = (n = t.connectingCb) == null ? void 0 : n.reject) == null || o.call(n, { success: !1, message: u }), t.events.dispatchEvent("log", u), t._clearConnect();
       } else
-        e.connectStatus == c.closing && (e.connectStatus = c.connecting, (u = (o = e.closingCb) == null ? void 0 : o.reject) == null || u.call(o, { success: !1, message: `关闭失败: onerror:${s}` }), e._clearClose());
+        t.connectStatus == r.closing && (t.connectStatus = r.connecting, (d = (c = t.closingCb) == null ? void 0 : c.reject) == null || d.call(c, {
+          success: !1,
+          message: `关闭失败: onerror:${s}`
+        }), t._clearClose());
     }, a.onmessage = function(s) {
-      e.heartbeat.received(s), !e.pause && e.events.dispatchEvent("message", s);
+      t.heartbeat.received(s), !t.pause && t.events.dispatchEvent("message", s);
     };
   }
-  async _wsConnect(t) {
-    return new Promise((e, s) => {
+  async _wsConnect(e) {
+    return new Promise((t, s) => {
       try {
-        let n = h(this.options, t ?? {});
-        if (this.connectStatus == c.connected) {
-          const i = "Websocket already connected";
-          return this.events.dispatchEvent("log", i), e({ success: !0, message: i });
+        let n = l(this.options, e ?? {});
+        if (this.connectStatus == r.connected) {
+          const o = "Websocket already connected";
+          return this.events.dispatchEvent("log", o), t({ success: !0, message: o });
         }
-        if (this.connectStatus !== c.closed) {
-          const i = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`;
-          throw new Error(i);
+        if (this.connectStatus !== r.closed) {
+          const o = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`;
+          throw new Error(o);
         }
-        this.connectingCb.resovle = e, this.connectingCb.reject = s, this.connectStatus = c.connecting, this._setSocketInstance(n.address), this.connectingTimer = setTimeout(() => {
+        this.connectingCb.resovle = t, this.connectingCb.reject = s, this.connectStatus = r.connecting, this._setSocketInstance(n.address), this.connectingTimer = setTimeout(() => {
           throw new Error("Websocket connect timeout");
         }, n.connectTimeout);
       } catch (n) {
-        this.connectStatus = c.closed, a == null || a.close();
-        let i = `${n}`;
-        n instanceof Error && (i = n.message);
-        const o = `connect failed: ${i}`;
-        this.events.dispatchEvent("log", o), this._clearConnect(), s({ success: !1, message: o });
+        this.connectStatus = r.closed, a == null || a.close();
+        let o = `${n}`;
+        n instanceof Error && (o = n.message);
+        const c = `connect failed: ${o}`;
+        this.events.dispatchEvent("log", c), this._clearConnect(), s({ success: !1, message: c });
       }
     });
-  }
-  _reExecute({ cb: t, retryCount: e, intervalTime: s }) {
-    const n = () => {
-      e = 0;
-    };
-    return new v(async (i, o) => {
-      const u = async () => {
-        try {
-          const l = await t();
-          i(l);
-        } catch (l) {
-          let d = `${l}`;
-          l instanceof Error && (d = l.message);
-          const g = `Because of reason [${d}], start re-execute on ${e}`;
-          if (console.warn(g), this.events.dispatchEvent("log", g), e !== 0)
-            e > 0 && e--, setTimeout(() => {
-              u();
-            }, s);
-          else if (e == 0) {
-            const f = `Because of reason [${d}], re-execute end`;
-            return console.error(f), this.events.dispatchEvent("log", f), o(l);
-          }
-        }
-      };
-      u();
-    }, n);
   }
   _clearConnect() {
     this.connectingCb.resovle = null, this.connectingCb.reject = null, this.connectingTimer && (clearTimeout(this.connectingTimer), this.connectingTimer = null);
   }
   async _wsClose() {
-    return new Promise((t, e) => {
-      if (this.connectStatus == c.closed) {
+    return new Promise((e, t) => {
+      if (this.connectStatus == r.closed) {
         const s = "Websocket already closed";
-        return this.events.dispatchEvent("log", s), t({ success: !0, message: s });
+        return this.events.dispatchEvent("log", s), e({ success: !0, message: s });
       }
-      if (this.connectStatus !== c.connected) {
+      if (this.connectStatus !== r.connected) {
         const s = `Websocket close filed: connectStatus current is ${this.connectStatus} not in connected.`;
-        return this.events.dispatchEvent("log", s), e({ success: !1, message: s });
+        return this.events.dispatchEvent("log", s), t({ success: !1, message: s });
       }
-      this.closingCb.resovle = t, this.closingCb.reject = e, this.connectStatus = c.closing, a == null || a.close(), this.closingTimer = setTimeout(() => {
-        this.connectStatus = c.closed;
+      this.closingCb.resovle = e, this.closingCb.reject = t, this.connectStatus = r.closing, a == null || a.close(), this.closingTimer = setTimeout(() => {
+        this.connectStatus = r.closed;
         const s = "Websocket close were timeout so it forced shutdown";
-        this.events.dispatchEvent("log", s), t({ success: !0, message: s }), this._clearClose();
+        this.events.dispatchEvent("log", s), e({ success: !0, message: s }), this._clearClose();
       }, 2e3);
     });
   }
@@ -235,46 +262,51 @@ class w {
   /**
    * Start connect websocket
    */
-  connect(t) {
-    return this.connectingXPromise = this._reExecute({ cb: () => this._wsConnect(t), retryCount: 3, intervalTime: 0 }), this.connectingXPromise;
+  connect(e) {
+    return this.connectingXPromise = b({
+      cb: () => this._wsConnect(e),
+      retryCount: 3,
+      intervalTime: 0,
+      event: (t) => this.events.dispatchEvent("log", t)
+    }), this.connectingXPromise.promise;
   }
   /**
    * Close websocket
    */
   async close() {
-    var t;
-    (t = this.connectingXPromise) == null || t.cancel(), this.heartbeat.clear(), await this._wsClose();
+    var e;
+    (e = this.connectingXPromise) == null || e.cancel(), this.heartbeat.clear(), await this._wsClose();
   }
   /**
    * Send msg
    * @param {string} msg - The event name.
    */
-  send(t) {
-    if (this.connectStatus !== c.connected) {
-      const e = "Websocket send error: connectStatus not in connected status.";
-      throw this.events.dispatchEvent("log", e), new Error(e);
+  send(e) {
+    if (this.connectStatus !== r.connected) {
+      const t = "Websocket send error: connectStatus not in connected status.";
+      throw this.events.dispatchEvent("log", t), new Error(t);
     }
-    a == null || a.send(t);
+    a == null || a.send(e);
   }
   /**
    * Add a callback function
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  addEventListener(t, e) {
-    this.events.addEventListener(t, e);
+  addEventListener(e, t) {
+    this.events.addEventListener(e, t);
   }
   /**
    * remove a callback function
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  removeEventListener(t, e) {
-    this.events.removeEventListener(t, e);
+  removeEventListener(e, t) {
+    this.events.removeEventListener(e, t);
   }
 }
 export {
-  c as SocketStatus,
-  w as WsContoller,
-  v as XPromise
+  r as SocketStatus,
+  S as WsContoller,
+  E as XPromise
 };
