@@ -1,15 +1,15 @@
-function cancelablePromise<T>(originPromise: () => Promise<T>) {
-  let cancelPromiseReject: (reason?: any) => void
+export function cancelablePromise<T>(originPromise: Promise<T>) {
+  let abort = () => { };
   const cancelPromise = new Promise((resolve, reject) => {
-    cancelPromiseReject = reject
+    abort = () => {
+      reject(new CancelablePromiseError("promise aborted"))
+    };
   })
 
   let promise = Promise.race([originPromise, cancelPromise])
   return {
     promise,
-    abort: () => {
-      cancelPromiseReject(new CancelablePromiseError("promise aborted"))
-    }
+    abort
   }
 }
 
