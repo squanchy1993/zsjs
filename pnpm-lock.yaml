@@ -20,7 +20,7 @@ importers:
       '@zsjs/utils':
         specifier: workspace:^
         version: link:packages/utils
-      '@zsjs/ws-controllers':
+      '@zsjs/ws-controller':
         specifier: workspace:^
         version: link:packages/ws-controller
       npm-run-all:

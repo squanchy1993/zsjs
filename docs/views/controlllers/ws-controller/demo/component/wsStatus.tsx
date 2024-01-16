@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import * as React from "react";
 import CardItem from "./cardItem";
-import { SocketStatus } from "@zsjs/ws-controllers";
+import { SocketStatus } from "@zsjs/ws-controller";
 import WsControllerContext from "./socketProvider";
 import classnames from "classnames";
 import { useOnMount, useOnUnmount } from "@zsjs/hooks";
