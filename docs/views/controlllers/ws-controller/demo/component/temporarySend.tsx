@@ -4,7 +4,7 @@ import CardItem from "./cardItem";
 import Button from "@mui/material/Button";
 import { Input, TextField } from "@mui/material";
 import WsControllerContext from "./socketProvider";
-import { SocketStatus } from "@zsjs/ws-controllers";
+import { SocketStatus } from "@zsjs/ws-controller";
 import { ZsMessage } from "@zsjs/mui-components";
 
 const Container = styled.div`

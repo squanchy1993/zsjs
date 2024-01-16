@@ -15,11 +15,11 @@ This controller was designed for WebSocket communication. It was sealed with som
 
 ## Installing
 
-`npm install @zsjs/ws-controllers;`
+`npm install @zsjs/ws-controller;`
 
 ## Example
 
-`import { WsContoller } from "@zsjs/ws-controllers";`
+`import { WsContoller } from "@zsjs/ws-controller";`
 
 ```ts
 // Generate a wsContoller instance and set options.
