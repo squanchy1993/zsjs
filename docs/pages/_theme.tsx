@@ -30,6 +30,16 @@ export default createTheme({
       label: 'Controllers',
       path: '/views/controlllers/ws-controller',
       activeIfMatch: '/views/controllers',
+      children: [
+        {
+          label: 'ws-controller',
+          path: '/views/controlllers/ws-controller',
+        },
+        {
+          label: 'resize-fit',
+          path: '/views/controlllers/resize-fit',
+        },
+      ]
     },
     { label: 'Vite', href: 'https://github.com/vitejs/vite' },
     {

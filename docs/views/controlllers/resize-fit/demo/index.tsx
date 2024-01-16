@@ -1,0 +1,51 @@
+import styled from "styled-components";
+import React, { useEffect } from "react";
+import { ResizeFit } from "@zsjs/resize-fit"
+import { useOnUnmount } from "@zsjs/hooks";
+
+const Container = styled.div`
+  width: 100%;
+  height: 400px;
+  .father {
+    display: flex;
+    width: 300px;
+    height: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    resize: both;
+    overflow: hidden;
+    .child {
+      width: 200px;
+      height: 400px;
+      background-color: red;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+`;
+
+const WsConfig: React.FC = () => {
+  let father = React.useRef<HTMLDivElement | null>(null)
+  let child = React.useRef<HTMLDivElement | null>(null)
+  let resizeFit: ResizeFit
+  useEffect(() => {
+    resizeFit = new ResizeFit({ container: father.current as HTMLElement, target: child.current as HTMLElement })
+  }, [])
+
+  useOnUnmount(() => {
+    resizeFit.dispose()
+  });
+  return (
+    <Container>
+      <div ref={father} className="father">
+        <div ref={child} className="child">
+          <img width={100} height={200} src="https://fakeimg.pl/100x200/ff0000/" />
+        </div>
+      </div>
+    </Container>
+  );
+};
+
+export default WsConfig;
