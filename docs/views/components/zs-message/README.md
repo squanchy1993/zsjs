@@ -1,5 +1,6 @@
 ---
 title: zs-message
+group: components
 subGroup: general
 ---
 
