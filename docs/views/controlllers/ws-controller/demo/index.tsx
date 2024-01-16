@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { useReactive } from "@zsjs/hooks";
-import { WsContoller } from "@zsjs/ws-controllers";
+import { WsContoller } from "@zsjs/ws-controller";
 
 // component
 import WsConfig from "./component/wsConfig";

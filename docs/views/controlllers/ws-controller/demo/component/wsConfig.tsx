@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { Alert, Input } from "@mui/material";
 import WsControllerContext from "./socketProvider";
 import { ZsMessage } from "@zsjs/mui-components";
-import { SocketStatus } from "@zsjs/ws-controllers";
+import { SocketStatus } from "@zsjs/ws-controller";
 
 const Container = styled.div`
   width: 100%;
