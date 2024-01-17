@@ -11,7 +11,7 @@ This controller was designed for WebSocket communication. It was sealed with som
 ## Demos
 
 <Demo src="./demo/index.tsx" />
-[WsController'demo](https://zsjs.vercel.app/views/controlllers/ws-controller)
+[WsController'demo](https://www.zsjs.fun/views/controlllers/ws-controller)
 
 ## Installing
 
