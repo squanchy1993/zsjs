@@ -1,16 +1,16 @@
 import * as React from "react";
-import { WsContoller } from "@zsjs/ws-controller";
+import { WsController } from "@zsjs/ws-controller";
 
-const WsControllerContext = React.createContext<WsContoller | null>(null);
+const WsControllerContext = React.createContext<WsController | null>(null);
 
 export interface WsControllerContextProps {
   children?: React.ReactNode;
-  wsContoller: WsContoller
+  wsController: WsController
 }
 
-export const WsControllerContextProvider: React.FC<WsControllerContextProps> = ({ children, wsContoller }) => {
+export const WsControllerContextProvider: React.FC<WsControllerContextProps> = ({ children, wsController }) => {
   return (
-    <WsControllerContext.Provider value={wsContoller}>
+    <WsControllerContext.Provider value={wsController}>
       {children}
     </WsControllerContext.Provider>
   )

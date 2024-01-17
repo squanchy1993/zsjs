@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import { HeartbeatConfig } from "./types";
-import { WsContoller } from "./wsController";
+import { WsController } from "./wsController";
 export declare class Heartbeat {
-    wsContoller: WsContoller;
+    wsController: WsController;
     sendTimer: null | NodeJS.Timeout;
     reSendTimer: null | NodeJS.Timeout;
     connectingXPromise: {
@@ -11,8 +11,8 @@ export declare class Heartbeat {
     } | null;
     startTime: number;
     options: HeartbeatConfig;
-    constructor({ wsContoller, options, }: {
-        wsContoller: WsContoller;
+    constructor({ wsController, options, }: {
+        wsController: WsController;
         options?: HeartbeatConfig;
     });
     setOptions(options?: HeartbeatConfig): void;
