@@ -9,8 +9,13 @@ subGroup: general
 This ResizeFit was designed to fit the upper container of a div, similar to the fit attribute of an image element.
 
 ## Demos
-
+### cover
 <Demo src="./demo/index.tsx" />
+[resize-fit's demo](https://zsjs.vercel.app/views/controlllers/resize-fit#cover)
+
+### contain
+<Demo src="./demo/contain.tsx" />
+[resize-fit's demo](https://zsjs.vercel.app/views/controlllers/resize-fit#contain)
 
 ## Installing
 
