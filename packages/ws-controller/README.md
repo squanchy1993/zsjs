@@ -19,14 +19,14 @@ This controller was designed for WebSocket communication. It was sealed with som
 
 ## Example
 
-`import { WsContoller } from "@zsjs/ws-controller";`
+`import { WsController } from "@zsjs/ws-controller";`
 
 ```ts
-// Generate a wsContoller instance and set options.
-const wsContoller = new WsContoller({
+// Generate a wsController instance and set options.
+const wsController = new WsController({
   wsOptions: {
     address: "ws://xxx.xxx.xx.xx:8800", // connect address
-    onOpened: (wsCtl: WsContoller) => {
+    onOpened: (wsCtl: WsController) => {
       wsCtl.send("Hello world"); // when connect success will call OnOpened function.
     },
   },
@@ -40,8 +40,8 @@ const wsContoller = new WsContoller({
 });
 
 // Or you can set address by setOPtions methods.
-const wsContoller = new WsContoller({});
-wsContoller.setOptions({ wsOptions: { address: "ws://xxx.xxx.xx.xx:8800" } });
+const wsController = new WsController({});
+wsController.setOptions({ wsOptions: { address: "ws://xxx.xxx.xx.xx:8800" } });
 
 // listen events
 const message = (msg) => {};
@@ -51,9 +51,9 @@ wsController?.addEventListener("message", message);
 /// remove listener
 wsController?.removeEventListener("message", message);
 
-// Use close and connect to control wsContoller.
-wsContoller.connect(); // start connect.
-wsContoller.close(); // close connect.
+// Use close and connect to control wsController.
+wsController.connect(); // start connect.
+wsController.close(); // close connect.
 ```
 
 ## Methods
