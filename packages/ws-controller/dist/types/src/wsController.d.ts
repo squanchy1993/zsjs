@@ -2,7 +2,7 @@
 import { SocketStatus, promiseCb, HeartbeatConfig, WsConfig } from "./types";
 import EventsCollect from "./EventsCollect";
 import { Heartbeat } from "./Heartbeat";
-export declare class WsContoller {
+export declare class WsController {
     options: WsConfig;
     _connectStatus: SocketStatus;
     get connectStatus(): SocketStatus;

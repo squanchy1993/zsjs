@@ -13,14 +13,14 @@ import { reExecute } from "@zsjs/utils";
 // @ts-ignore
 let wsInstance: WebSocket | null = null;
 
-export class WsContoller {
+export class WsController {
   // config
   options: WsConfig = {
     address: "",
     connectTimeout: 5000,
     reconnectIntervalTime: 2000,
     retry: 2,
-    onOpened: function (this: WsContoller) { },
+    onOpened: function (this: WsController) { },
   };
 
   // state
@@ -48,7 +48,7 @@ export class WsContoller {
   closingTimer: NodeJS.Timeout | null = null;
   connectingXPromise?: { promise: Promise<any>, cancel: Function };
 
-  heartbeat = new Heartbeat({ wsContoller: this });
+  heartbeat = new Heartbeat({ wsController: this });
   events: EventsCollect = new EventsCollect(["message", "log", "status"]);
 
   constructor(options: {
