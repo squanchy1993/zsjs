@@ -111,7 +111,7 @@ function b({
 }
 class C {
   constructor({
-    wsContoller: e,
+    wsController: e,
     options: t
   }) {
     this.sendTimer = null, this.reSendTimer = null, this.connectingXPromise = null, this.startTime = 0, this.options = {
@@ -119,19 +119,19 @@ class C {
       timeout: 5e3,
       intervalTime: 5e3,
       sendMsg: "---- heartbeat ----"
-    }, this.wsContoller = e, this.setOptions(t);
+    }, this.wsController = e, this.setOptions(t);
   }
   setOptions(e = {}) {
     this.options = l(this.options, e);
   }
   send() {
     const e = `heartbeat send message: ${this.options.sendMsg}`;
-    this.wsContoller.events.dispatchEvent("log", e), this.startTime = (/* @__PURE__ */ new Date()).getTime(), this.wsContoller.send(this.options.sendMsg), this.sendTimer && clearTimeout(this.sendTimer), this.sendTimer = setTimeout(async () => {
-      this.wsContoller.connectStatus == r.connected && await this.wsContoller._wsClose(), this.connectingXPromise = b({
-        cb: () => this.wsContoller._wsConnect({}),
+    this.wsController.events.dispatchEvent("log", e), this.startTime = (/* @__PURE__ */ new Date()).getTime(), this.wsController.send(this.options.sendMsg), this.sendTimer && clearTimeout(this.sendTimer), this.sendTimer = setTimeout(async () => {
+      this.wsController.connectStatus == r.connected && await this.wsController._wsClose(), this.connectingXPromise = b({
+        cb: () => this.wsController._wsConnect({}),
         retryCount: -1,
         intervalTime: 2e3,
-        event: (t) => this.wsContoller.events.dispatchEvent("log", t)
+        event: (t) => this.wsController.events.dispatchEvent("log", t)
       });
     }, this.options.timeout);
   }
@@ -141,12 +141,12 @@ class C {
       return;
     let s = (/* @__PURE__ */ new Date()).getTime();
     const n = `heartbeat started at ${this.startTime}, completed in ${s}', duration is ${(s - this.startTime) / 1e3} seconds`;
-    this.wsContoller.events.dispatchEvent("log", n), this.startTime = 0, this.sendTimer && (clearTimeout(this.sendTimer), this.sendTimer = null), this.reSendTimer || (this.reSendTimer = setTimeout(() => {
+    this.wsController.events.dispatchEvent("log", n), this.startTime = 0, this.sendTimer && (clearTimeout(this.sendTimer), this.sendTimer = null), this.reSendTimer || (this.reSendTimer = setTimeout(() => {
       this.send(), this.reSendTimer && clearTimeout(this.reSendTimer), this.reSendTimer = null;
     }, this.options.intervalTime));
   }
   clear() {
-    this.sendTimer && clearTimeout(this.sendTimer), this.sendTimer = null, this.reSendTimer && clearTimeout(this.reSendTimer), this.reSendTimer = null, this.connectingXPromise && this.connectingXPromise.cancel(), this.wsContoller.events.dispatchEvent("log", "heartbeat was cleared out by user");
+    this.sendTimer && clearTimeout(this.sendTimer), this.sendTimer = null, this.reSendTimer && clearTimeout(this.reSendTimer), this.reSendTimer = null, this.connectingXPromise && this.connectingXPromise.cancel(), this.wsController.events.dispatchEvent("log", "heartbeat was cleared out by user");
   }
 }
 let a = null;
@@ -165,7 +165,7 @@ class S {
     }, this.closingCb = {
       resovle: null,
       reject: null
-    }, this.pause = !1, this.connectingTimer = null, this.closingTimer = null, this.heartbeat = new C({ wsContoller: this }), this.events = new w(["message", "log", "status"]), this.setOptions(e);
+    }, this.pause = !1, this.connectingTimer = null, this.closingTimer = null, this.heartbeat = new C({ wsController: this }), this.events = new w(["message", "log", "status"]), this.setOptions(e);
   }
   get connectStatus() {
     return this._connectStatus;
@@ -307,6 +307,6 @@ class S {
 }
 export {
   r as SocketStatus,
-  S as WsContoller,
+  S as WsController,
   E as XPromise
 };

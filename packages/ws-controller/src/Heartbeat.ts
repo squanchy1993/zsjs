@@ -1,10 +1,10 @@
 import merge from "ts-deepmerge";
 import { HeartbeatConfig, SocketStatus, XPromise } from "./types";
-import { WsContoller } from "./wsController";
+import { WsController } from "./wsController";
 import { reExecute } from "@zsjs/utils";
 
 export class Heartbeat {
-  wsContoller: WsContoller;
+  wsController: WsController;
   sendTimer: null | NodeJS.Timeout = null;
   reSendTimer: null | NodeJS.Timeout = null;
   connectingXPromise: { promise: Promise<any>; cancel: Function } | null = null;
@@ -18,13 +18,13 @@ export class Heartbeat {
   };
 
   constructor({
-    wsContoller,
+    wsController,
     options,
   }: {
-    wsContoller: WsContoller;
+    wsController: WsController;
     options?: HeartbeatConfig;
   }) {
-    this.wsContoller = wsContoller;
+    this.wsController = wsController;
     this.setOptions(options);
   }
 
@@ -35,22 +35,22 @@ export class Heartbeat {
   send() {
     // console.log(`------ heartbeat check started, wite callback -----`);
     const message = `heartbeat send message: ${this.options.sendMsg}`;
-    this.wsContoller.events.dispatchEvent("log", message);
+    this.wsController.events.dispatchEvent("log", message);
 
     this.startTime = new Date().getTime();
-    this.wsContoller.send(this.options.sendMsg as string);
+    this.wsController.send(this.options.sendMsg as string);
     this.sendTimer && clearTimeout(this.sendTimer);
     this.sendTimer = setTimeout(async () => {
       // console.log('------ heartbeat check lost connection and restart connect -----')
-      if (this.wsContoller.connectStatus == SocketStatus.connected) {
-        await this.wsContoller._wsClose();
+      if (this.wsController.connectStatus == SocketStatus.connected) {
+        await this.wsController._wsClose();
       }
       this.connectingXPromise = reExecute({
-        cb: () => this.wsContoller._wsConnect({}),
+        cb: () => this.wsController._wsConnect({}),
         retryCount: -1,
         intervalTime: 2000,
         event: (message) =>
-          this.wsContoller.events.dispatchEvent<string>("log", message),
+          this.wsController.events.dispatchEvent<string>("log", message),
       });
     }, this.options.timeout);
   }
@@ -67,7 +67,7 @@ export class Heartbeat {
     const message = `heartbeat started at ${this.startTime
       }, completed in ${endTime}', duration is ${(endTime - this.startTime) / 1000
       } seconds`;
-    this.wsContoller.events.dispatchEvent("log", message);
+    this.wsController.events.dispatchEvent("log", message);
 
     this.startTime = 0;
     // console.log(`------ heartbeat check complete, ready to next check -----`);
@@ -95,6 +95,6 @@ export class Heartbeat {
     this.connectingXPromise && this.connectingXPromise.cancel();
     // console.log(`------ heartbeat was cleared -----`);
     const message = `heartbeat was cleared out by user`;
-    this.wsContoller.events.dispatchEvent("log", message);
+    this.wsController.events.dispatchEvent("log", message);
   }
 }

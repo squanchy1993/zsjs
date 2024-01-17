@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { useReactive } from "@zsjs/hooks";
-import { WsContoller } from "@zsjs/ws-controller";
+import { WsController } from "@zsjs/ws-controller";
 
 // component
 import WsConfig from "./component/wsConfig";
@@ -51,7 +51,7 @@ const Container = styled.div`
 `;
 
 function App() {
-  const wsContoller = useReactive(new WsContoller({
+  const wsController = useReactive(new WsController({
     heartbeatOptions: {
       handleHeartbeatMsg: (msg) => {
         return msg.data.includes('---- heartbeat ----');
@@ -67,7 +67,7 @@ function App() {
   }
 
   return (
-    <WsControllerContextProvider wsContoller={wsContoller}>
+    <WsControllerContextProvider wsController={wsController}>
       <Container>
         <section className="header"></section>
         <section className="body">
