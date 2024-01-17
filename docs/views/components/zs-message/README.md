@@ -44,7 +44,7 @@ export default function ZsMessageDemo() {
 #### example
 
 <Demo src="./demo.tsx" />
-[ZsMessage'demo](https://zsjs.vercel.app/views/components/zs-messager)
+[ZsMessage'demo](https://www.zsjs.fun/views/components/zs-messager)
 
 ### renderMessage
 
@@ -59,4 +59,4 @@ export default function ZsMessageDemo() {
 #### example
 
 <Demo src="./render-message-demo.tsx" />
-[ZsMessage'demo](https://zsjs.vercel.app/examples/controlllers/ws-controller)
+[ZsMessage'demo](https://www.zsjs.fun/examples/controlllers/ws-controller)
