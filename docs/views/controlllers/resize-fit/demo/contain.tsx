@@ -8,8 +8,8 @@ const Container = styled.div`
   height: 400px;
   .father {
     display: flex;
-    width: 400px;
-    height: 200px;
+    width: 200px;
+    height: 400px;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
     resize: both;
@@ -31,7 +31,7 @@ const WsConfig: React.FC = () => {
   let child = React.useRef<HTMLDivElement | null>(null)
   let resizeFit: ResizeFit
   useEffect(() => {
-    resizeFit = new ResizeFit({ container: father.current as HTMLElement, target: child.current as HTMLElement })
+    resizeFit = new ResizeFit({ container: father.current as HTMLElement, target: child.current as HTMLElement, mode: 'contain' })
   }, [])
 
   useOnUnmount(() => {
