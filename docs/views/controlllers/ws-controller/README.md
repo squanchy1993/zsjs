@@ -22,7 +22,7 @@ This controller was designed for WebSocket communication. It was sealed with som
 `import { WsController } from "@zsjs/ws-controller";`
 
 ```ts
-// Generate a wsController instance and set options.
+// Create a wsController instance with options.
 const wsController = new WsController({
   wsOptions: {
     address: "ws://xxx.xxx.xx.xx:8800", // connect address
