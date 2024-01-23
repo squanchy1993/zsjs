@@ -46,7 +46,7 @@ export interface HeartbeatConfig {
 
 
 export interface WsConfig {
-  address: string;
+  address?: string;
   connectTimeout?: number;
   reconnectIntervalTime?: number;
   retry?: number | null;
