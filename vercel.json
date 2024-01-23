@@ -1,6 +1,16 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" },
-    { "source": "/ws", "destination": "ws://124.222.224.186:8800" }
+    {
+      "source": "/baidu",
+      "destination": "https://www.baidu.com/"
+    },
+    {
+      "source": "/ws",
+      "destination": "ws://124.222.224.186:8800"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
