@@ -7,7 +7,6 @@ export declare class WsController {
     _connectStatus: SocketStatus;
     get connectStatus(): SocketStatus;
     set connectStatus(status: SocketStatus);
-    connectingCb: promiseCb;
     closingCb: promiseCb;
     pause: boolean;
     connectingTimer: NodeJS.Timeout | null;
@@ -15,6 +14,7 @@ export declare class WsController {
     connectingXPromise?: {
         promise: Promise<any>;
         cancel: Function;
+        finished: boolean;
     };
     heartbeat: Heartbeat;
     events: EventsCollect;
@@ -26,7 +26,7 @@ export declare class WsController {
         wsOptions?: WsConfig;
         heartbeatOptions?: HeartbeatConfig;
     }): void;
-    _setSocketInstance(address: string): void;
+    _setSocketInstance(address: string): Promise<object>;
     _wsConnect(options?: {
         address?: string;
         connectTimeout?: number;

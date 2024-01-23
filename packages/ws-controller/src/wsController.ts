@@ -8,7 +8,7 @@ import {
 } from "./types";
 import EventsCollect from "./EventsCollect";
 import { Heartbeat } from "./Heartbeat";
-import { reExecute } from "@zsjs/utils";
+import { reExecute, cancelablePromise } from "@zsjs/utils";
 
 // @ts-ignore
 let wsInstance: WebSocket | null = null;
@@ -35,10 +35,6 @@ export class WsController {
     this.events.dispatchEvent<SocketStatus>("status", this._connectStatus);
   }
 
-  connectingCb: promiseCb = {
-    resovle: null,
-    reject: null,
-  };
   closingCb: promiseCb = {
     resovle: null,
     reject: null,
@@ -46,7 +42,7 @@ export class WsController {
   pause: boolean = false;
   connectingTimer: NodeJS.Timeout | null = null;
   closingTimer: NodeJS.Timeout | null = null;
-  connectingXPromise?: { promise: Promise<any>, cancel: Function };
+  connectingXPromise?: { promise: Promise<any>, cancel: Function, finished: boolean };
 
   heartbeat = new Heartbeat({ wsController: this });
   events: EventsCollect = new EventsCollect(["message", "log", "status"]);
@@ -71,72 +67,68 @@ export class WsController {
 
   _setSocketInstance(address: string) {
     const that = this;
-    // @ts-ignore
-    wsInstance = new WebSocket(address);
+    return new Promise<object>((resolve, reject) => {
+      // @ts-ignore
+      wsInstance = new WebSocket(address);
 
-    // onopen
-    wsInstance.onopen = function (ev: any) {
-      if (that.connectStatus == SocketStatus.connecting) {
-        that.connectStatus = SocketStatus.connected;
-        const message = "Websocket start success.";
-        that.connectingCb?.resovle?.({ success: true, message });
-        that.events.dispatchEvent<string>("log", message);
-        that._clearConnect();
+      // onopen
+      wsInstance.onopen = function (ev: any) {
+        if (that.connectStatus == SocketStatus.connecting) {
+          that.connectStatus = SocketStatus.connected;
+          const message = "Websocket start success.";
+          resolve({ success: true, message })
+          that.events.dispatchEvent<string>("log", message);
+          that.options.onOpened?.(that);
+          // start heartbeat;
+          // const [send]
+          setTimeout(() => {
+            that.heartbeat.send();
+          }, 1000);
+        }
+      };
 
-        that.options.onOpened?.(that);
-        // start heartbeat;
-        // const [send]
-        setTimeout(() => {
-          that.heartbeat.send();
-        }, 1000);
-      }
-    };
+      // onclose
+      wsInstance.onclose = function (ev: any) {
+        if (that.connectStatus == SocketStatus.closing) {
+          that.connectStatus = SocketStatus.closed;
+          const message = "Websocket closed success";
+          that.closingCb?.resovle?.({ success: true, message });
+          that.events.dispatchEvent<string>("log", message);
+          that._clearClose();
+        }
+      };
 
-    // onclose
-    wsInstance.onclose = function (ev: any) {
-      if (that.connectStatus == SocketStatus.closing) {
-        that.connectStatus = SocketStatus.closed;
-        const message = "Websocket closed success";
-        that.closingCb?.resovle?.({ success: true, message });
-        that.events.dispatchEvent<string>("log", message);
-        that._clearClose();
-      }
-    };
+      // onerror
+      wsInstance.onerror = function (ev: any) {
+        if (that.connectStatus == SocketStatus.connecting) {
+          that.connectStatus = SocketStatus.closed;
+          const message = "Websocket start error";
+          reject(new Error(message));
+          that.events.dispatchEvent("log", message);
+        } else if (that.connectStatus == SocketStatus.closing) {
+          that.connectStatus = SocketStatus.connecting;
+          that.closingCb?.reject?.(new Error(`Websocket close error: onerror:${ev}`));
+          that._clearClose();
+        }
+      };
 
-    // onerror
-    wsInstance.onerror = function (ev: any) {
-      if (that.connectStatus == SocketStatus.connecting) {
-        that.connectStatus = SocketStatus.closed;
-        const message = "Websocket start error";
-        that.connectingCb?.reject?.({ success: false, message });
-        that.events.dispatchEvent("log", message);
-        that._clearConnect();
-      } else if (that.connectStatus == SocketStatus.closing) {
-        that.connectStatus = SocketStatus.connecting;
-        that.closingCb?.reject?.({
-          success: false,
-          message: `关闭失败: onerror:${ev}`,
-        });
-        that._clearClose();
-      }
-    };
+      // onmessage
+      wsInstance.onmessage = function (ev: MessageEvent) {
+        that.heartbeat.received(ev);
+        if (that.pause) {
+          return;
+        }
 
-    // onmessage
-    wsInstance.onmessage = function (ev: MessageEvent) {
-      that.heartbeat.received(ev);
-      if (that.pause) {
-        return;
-      }
-
-      that.events.dispatchEvent<MessageEvent>("message", ev);
-    };
+        that.events.dispatchEvent<MessageEvent>("message", ev);
+      };
+    })
   }
 
   async _wsConnect(options?: {
     address?: string;
     connectTimeout?: number;
   }): Promise<Object> {
-    return new Promise<any>((resovle, reject) => {
+    return new Promise<any>(async (resovle, reject) => {
       try {
         let connectConfig = merge(this.options, options ?? {}) as WsConfig;
 
@@ -146,22 +138,27 @@ export class WsController {
           return resovle({ success: true, message });
         }
 
+        if (!connectConfig.address) {
+          const message = "Websocket adress not exsit";
+          this.events.dispatchEvent<string>("log", message);
+          throw new Error(message);
+        }
+
         if (this.connectStatus !== SocketStatus.closed) {
           const message = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`;
           throw new Error(message);
         }
 
-        this.connectingCb.resovle = resovle;
-        this.connectingCb.reject = reject;
-
         // set socket instance
         this.connectStatus = SocketStatus.connecting;
-        this._setSocketInstance(connectConfig.address);
+        const socketCancel = cancelablePromise(this._setSocketInstance(connectConfig.address as string))
 
         // connecting out of time;
         this.connectingTimer = setTimeout(() => {
-          throw new Error("Websocket connect timeout");
+          socketCancel.abort("Websocket connect timeout")
         }, connectConfig.connectTimeout);
+
+        await socketCancel.promise;
       } catch (error) {
         this.connectStatus = SocketStatus.closed;
         wsInstance?.close();
@@ -172,15 +169,14 @@ export class WsController {
         }
         const message = `connect failed: ${errorMsg}`;
         this.events.dispatchEvent<string>("log", message);
+        reject(new Error(message));
+      } finally {
         this._clearConnect();
-        reject({ success: false, message });
       }
     });
   }
 
   _clearConnect() {
-    this.connectingCb.resovle = null;
-    this.connectingCb.reject = null;
     if (this.connectingTimer) {
       clearTimeout(this.connectingTimer);
       this.connectingTimer = null;
@@ -197,7 +193,7 @@ export class WsController {
       if (this.connectStatus !== SocketStatus.connected) {
         const message = `Websocket close filed: connectStatus current is ${this.connectStatus} not in connected.`;
         this.events.dispatchEvent<string>("log", message);
-        return reject({ success: false, message });
+        return reject(new Error(message));
       }
       this.closingCb.resovle = resovle;
       this.closingCb.reject = reject;
@@ -246,7 +242,10 @@ export class WsController {
    * Close websocket
    */
   async close() {
-    this.connectingXPromise?.cancel();
+    if (this.connectingXPromise?.finished) {
+      this.connectingXPromise?.cancel();
+    }
+
     this.heartbeat.clear();
     await this._wsClose();
   }
