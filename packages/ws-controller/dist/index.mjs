@@ -1,17 +1,17 @@
-const T = (i) => {
-  if (typeof i == "object" && i !== null) {
+const w = (o) => {
+  if (typeof o == "object" && o !== null) {
     if (typeof Object.getPrototypeOf == "function") {
-      const e = Object.getPrototypeOf(i);
+      const e = Object.getPrototypeOf(o);
       return e === Object.prototype || e === null;
     }
-    return Object.prototype.toString.call(i) === "[object Object]";
+    return Object.prototype.toString.call(o) === "[object Object]";
   }
   return !1;
-}, l = (...i) => i.reduce((e, t) => {
+}, l = (...o) => o.reduce((e, t) => {
   if (Array.isArray(t))
     throw new TypeError("Arguments provided to ts-deepmerge must be objects, not arrays.");
   return Object.keys(t).forEach((s) => {
-    ["__proto__", "constructor", "prototype"].includes(s) || (Array.isArray(e[s]) && Array.isArray(t[s]) ? e[s] = l.options.mergeArrays ? l.options.uniqueArrayItems ? Array.from(new Set(e[s].concat(t[s]))) : [...e[s], ...t[s]] : t[s] : T(e[s]) && T(t[s]) ? e[s] = l(e[s], t[s]) : e[s] = t[s] === void 0 ? l.options.allowUndefinedOverrides ? t[s] : e[s] : t[s]);
+    ["__proto__", "constructor", "prototype"].includes(s) || (Array.isArray(e[s]) && Array.isArray(t[s]) ? e[s] = l.options.mergeArrays ? l.options.uniqueArrayItems ? Array.from(new Set(e[s].concat(t[s]))) : [...e[s], ...t[s]] : t[s] : w(e[s]) && w(t[s]) ? e[s] = l(e[s], t[s]) : e[s] = t[s] === void 0 ? l.options.allowUndefinedOverrides ? t[s] : e[s] : t[s]);
   }), e;
 }, {}), g = {
   allowUndefinedOverrides: !0,
@@ -19,25 +19,25 @@ const T = (i) => {
   uniqueArrayItems: !0
 };
 l.options = g;
-l.withOptions = (i, ...e) => {
-  l.options = Object.assign(Object.assign({}, g), i);
+l.withOptions = (o, ...e) => {
+  l.options = Object.assign(Object.assign({}, g), o);
   const t = l(...e);
   return l.options = g, t;
 };
-class E extends Promise {
+class P extends Promise {
   constructor(e, t) {
-    let s, n;
-    super((o, c) => {
-      e(o, c), s = o, n = c;
-    }), this.resolve = s, this.reject = n, this.cancelPromise = t;
+    let s, c;
+    super((i, n) => {
+      e(i, n), s = i, c = n;
+    }), this.resolve = s, this.reject = c, this.cancelPromise = t;
   }
   cancel() {
     var e, t;
     (e = this.reject) == null || e.call(this, "promise has been canceled"), (t = this.cancelPromise) == null || t.call(this);
   }
 }
-var r = /* @__PURE__ */ ((i) => (i.closed = "closed", i.connecting = "connecting", i.connected = "connected", i.closing = "closing", i))(r || {});
-class w {
+var r = /* @__PURE__ */ ((o) => (o.closed = "closed", o.connecting = "connecting", o.connected = "connected", o.closing = "closing", o))(r || {});
+class E {
   constructor(e) {
     this.events = {}, e.forEach((t) => {
       Reflect.set(this.events, t, []);
@@ -71,45 +71,65 @@ class w {
   }
 }
 function b({
-  cb: i,
+  cb: o,
   retryCount: e,
   intervalTime: t,
   event: s
 }) {
-  let n = !1, o = () => {
+  let c = !1, i = !1, n = () => {
   };
+  const h = new Promise(async (d, f) => {
+    n = () => {
+      e = 0, i = !0, c = !0;
+      const u = "Because of reason [user cancel], re-execute end";
+      return console.warn(u), s(u), f(new Error(u));
+    };
+    const p = async () => {
+      try {
+        const u = await o();
+        c = !0, d(u);
+      } catch (u) {
+        if (i)
+          return;
+        let m = "";
+        u instanceof Error ? m = u.message : m = JSON.stringify(u);
+        const v = `Because of reason [${m}], start re-execute on ${e}`;
+        if (console.warn(v), s(v), e == 0) {
+          const T = `Because of reason [${m}], re-execute end`;
+          console.error(T), s(T), c = !0, f(u);
+        } else
+          e !== 0 && (e > 0 && e--, setTimeout(() => {
+            p();
+          }, t));
+      }
+    };
+    p();
+  });
   return {
-    promise: new Promise(async (d, u) => {
-      o = () => {
-        e = 0, n = !0;
-        const h = "Because of reason [user cancel], re-execute end";
-        return console.warn(h), s(h), u(new Error(h));
-      };
-      const f = async () => {
-        try {
-          const h = await i();
-          d(h);
-        } catch (h) {
-          if (n)
-            return;
-          let m = `${h}`;
-          h instanceof Error && (m = h.message);
-          const p = `Because of reason [${m}], start re-execute on ${e}`;
-          if (console.warn(p), s(p), e == 0) {
-            const v = `Because of reason [${m}], re-execute end`;
-            console.error(v), s(v), u(h);
-          } else
-            e !== 0 && (e > 0 && e--, setTimeout(() => {
-              f();
-            }, t));
-        }
-      };
-      f();
-    }),
-    cancel: o
+    finished: c,
+    promise: h,
+    cancel: n
   };
 }
-class C {
+function S(o) {
+  let e = (c) => {
+  };
+  const t = new Promise((c, i) => {
+    e = (n = "promise aborted") => {
+      i(new C(n));
+    };
+  });
+  return {
+    promise: Promise.race([o, t]),
+    abort: e
+  };
+}
+class C extends Error {
+  constructor(e) {
+    super(e);
+  }
+}
+class O {
   constructor({
     wsController: e,
     options: t
@@ -136,12 +156,12 @@ class C {
     }, this.options.timeout);
   }
   received(e) {
-    var o, c;
-    if (!this.sendTimer || !((c = (o = this.options).handleHeartbeatMsg) == null ? void 0 : c.call(o, e)))
+    var i, n;
+    if (!this.sendTimer || !((n = (i = this.options).handleHeartbeatMsg) == null ? void 0 : n.call(i, e)))
       return;
     let s = (/* @__PURE__ */ new Date()).getTime();
-    const n = `heartbeat started at ${this.startTime}, completed in ${s}', duration is ${(s - this.startTime) / 1e3} seconds`;
-    this.wsController.events.dispatchEvent("log", n), this.startTime = 0, this.sendTimer && (clearTimeout(this.sendTimer), this.sendTimer = null), this.reSendTimer || (this.reSendTimer = setTimeout(() => {
+    const c = `heartbeat started at ${this.startTime}, completed in ${s}', duration is ${(s - this.startTime) / 1e3} seconds`;
+    this.wsController.events.dispatchEvent("log", c), this.startTime = 0, this.sendTimer && (clearTimeout(this.sendTimer), this.sendTimer = null), this.reSendTimer || (this.reSendTimer = setTimeout(() => {
       this.send(), this.reSendTimer && clearTimeout(this.reSendTimer), this.reSendTimer = null;
     }, this.options.intervalTime));
   }
@@ -150,7 +170,7 @@ class C {
   }
 }
 let a = null;
-class S {
+class _ {
   constructor(e) {
     this.options = {
       address: "",
@@ -159,13 +179,10 @@ class S {
       retry: 2,
       onOpened: function() {
       }
-    }, this._connectStatus = r.closed, this.connectingCb = {
+    }, this._connectStatus = r.closed, this.closingCb = {
       resovle: null,
       reject: null
-    }, this.closingCb = {
-      resovle: null,
-      reject: null
-    }, this.pause = !1, this.connectingTimer = null, this.closingTimer = null, this.heartbeat = new C({ wsController: this }), this.events = new w(["message", "log", "status"]), this.setOptions(e);
+    }, this.pause = !1, this.connectingTimer = null, this.closingTimer = null, this.heartbeat = new O({ wsController: this }), this.events = new E(["message", "log", "status"]), this.setOptions(e);
   }
   get connectStatus() {
     return this._connectStatus;
@@ -181,63 +198,70 @@ class S {
   }
   _setSocketInstance(e) {
     const t = this;
-    a = new WebSocket(e), a.onopen = function(s) {
-      var n, o, c, d;
-      if (t.connectStatus == r.connecting) {
-        t.connectStatus = r.connected;
-        const u = "Websocket start success.";
-        (o = (n = t.connectingCb) == null ? void 0 : n.resovle) == null || o.call(n, { success: !0, message: u }), t.events.dispatchEvent("log", u), t._clearConnect(), (d = (c = t.options).onOpened) == null || d.call(c, t), setTimeout(() => {
-          t.heartbeat.send();
-        }, 1e3);
-      }
-    }, a.onclose = function(s) {
-      var n, o;
-      if (t.connectStatus == r.closing) {
-        t.connectStatus = r.closed;
-        const c = "Websocket closed success";
-        (o = (n = t.closingCb) == null ? void 0 : n.resovle) == null || o.call(n, { success: !0, message: c }), t.events.dispatchEvent("log", c), t._clearClose();
-      }
-    }, a.onerror = function(s) {
-      var n, o, c, d;
-      if (t.connectStatus == r.connecting) {
-        t.connectStatus = r.closed;
-        const u = "Websocket start error";
-        (o = (n = t.connectingCb) == null ? void 0 : n.reject) == null || o.call(n, { success: !1, message: u }), t.events.dispatchEvent("log", u), t._clearConnect();
-      } else
-        t.connectStatus == r.closing && (t.connectStatus = r.connecting, (d = (c = t.closingCb) == null ? void 0 : c.reject) == null || d.call(c, {
-          success: !1,
-          message: `关闭失败: onerror:${s}`
-        }), t._clearClose());
-    }, a.onmessage = function(s) {
-      t.heartbeat.received(s), !t.pause && t.events.dispatchEvent("message", s);
-    };
+    return new Promise((s, c) => {
+      a = new WebSocket(e), a.onopen = function(i) {
+        var n, h;
+        if (t.connectStatus == r.connecting) {
+          t.connectStatus = r.connected;
+          const d = "Websocket start success.";
+          s({ success: !0, message: d }), t.events.dispatchEvent("log", d), (h = (n = t.options).onOpened) == null || h.call(n, t), setTimeout(() => {
+            t.heartbeat.send();
+          }, 1e3);
+        }
+      }, a.onclose = function(i) {
+        var n, h;
+        if (t.connectStatus == r.closing) {
+          t.connectStatus = r.closed;
+          const d = "Websocket closed success";
+          (h = (n = t.closingCb) == null ? void 0 : n.resovle) == null || h.call(n, { success: !0, message: d }), t.events.dispatchEvent("log", d), t._clearClose();
+        }
+      }, a.onerror = function(i) {
+        var n, h;
+        if (t.connectStatus == r.connecting) {
+          t.connectStatus = r.closed;
+          const d = "Websocket start error";
+          c(new Error(d)), t.events.dispatchEvent("log", d);
+        } else
+          t.connectStatus == r.closing && (t.connectStatus = r.connecting, (h = (n = t.closingCb) == null ? void 0 : n.reject) == null || h.call(n, new Error(`Websocket close error: onerror:${i}`)), t._clearClose());
+      }, a.onmessage = function(i) {
+        t.heartbeat.received(i), !t.pause && t.events.dispatchEvent("message", i);
+      };
+    });
   }
   async _wsConnect(e) {
-    return new Promise((t, s) => {
+    return new Promise(async (t, s) => {
       try {
-        let n = l(this.options, e ?? {});
+        let c = l(this.options, e ?? {});
         if (this.connectStatus == r.connected) {
-          const o = "Websocket already connected";
-          return this.events.dispatchEvent("log", o), t({ success: !0, message: o });
+          const n = "Websocket already connected";
+          return this.events.dispatchEvent("log", n), t({ success: !0, message: n });
+        }
+        if (!c.address) {
+          const n = "Websocket adress not exsit";
+          throw this.events.dispatchEvent("log", n), new Error(n);
         }
         if (this.connectStatus !== r.closed) {
-          const o = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`;
-          throw new Error(o);
+          const n = `Websocket connect failed: connectStatus current is ${this.connectStatus} not closed`;
+          throw new Error(n);
         }
-        this.connectingCb.resovle = t, this.connectingCb.reject = s, this.connectStatus = r.connecting, this._setSocketInstance(n.address), this.connectingTimer = setTimeout(() => {
-          throw new Error("Websocket connect timeout");
-        }, n.connectTimeout);
-      } catch (n) {
+        this.connectStatus = r.connecting;
+        const i = S(this._setSocketInstance(c.address));
+        this.connectingTimer = setTimeout(() => {
+          i.abort("Websocket connect timeout");
+        }, c.connectTimeout), await i.promise;
+      } catch (c) {
         this.connectStatus = r.closed, a == null || a.close();
-        let o = `${n}`;
-        n instanceof Error && (o = n.message);
-        const c = `connect failed: ${o}`;
-        this.events.dispatchEvent("log", c), this._clearConnect(), s({ success: !1, message: c });
+        let i = `${c}`;
+        c instanceof Error && (i = c.message);
+        const n = `connect failed: ${i}`;
+        this.events.dispatchEvent("log", n), s(new Error(n));
+      } finally {
+        this._clearConnect();
       }
     });
   }
   _clearConnect() {
-    this.connectingCb.resovle = null, this.connectingCb.reject = null, this.connectingTimer && (clearTimeout(this.connectingTimer), this.connectingTimer = null);
+    this.connectingTimer && (clearTimeout(this.connectingTimer), this.connectingTimer = null);
   }
   async _wsClose() {
     return new Promise((e, t) => {
@@ -247,7 +271,7 @@ class S {
       }
       if (this.connectStatus !== r.connected) {
         const s = `Websocket close filed: connectStatus current is ${this.connectStatus} not in connected.`;
-        return this.events.dispatchEvent("log", s), t({ success: !1, message: s });
+        return this.events.dispatchEvent("log", s), t(new Error(s));
       }
       this.closingCb.resovle = e, this.closingCb.reject = t, this.connectStatus = r.closing, a == null || a.close(), this.closingTimer = setTimeout(() => {
         this.connectStatus = r.closed;
@@ -274,8 +298,8 @@ class S {
    * Close websocket
    */
   async close() {
-    var e;
-    (e = this.connectingXPromise) == null || e.cancel(), this.heartbeat.clear(), await this._wsClose();
+    var e, t;
+    (e = this.connectingXPromise) != null && e.finished && ((t = this.connectingXPromise) == null || t.cancel()), this.heartbeat.clear(), await this._wsClose();
   }
   /**
    * Send msg
@@ -307,6 +331,6 @@ class S {
 }
 export {
   r as SocketStatus,
-  S as WsController,
-  E as XPromise
+  _ as WsController,
+  P as XPromise
 };
