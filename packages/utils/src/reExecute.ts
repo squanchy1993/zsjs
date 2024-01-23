@@ -8,7 +8,8 @@ export function reExecute<T>({
   retryCount: number;
   intervalTime?: number;
   event: (message: string) => void
-}): { promise: Promise<T>; cancel: Function } {
+}): { promise: Promise<T>; cancel: Function, finished: boolean } {
+  let finished = false
 
   let canceled = false;
 
@@ -17,9 +18,11 @@ export function reExecute<T>({
 
   const promise = new Promise<T>(async (resolve, reject) => {
 
+
     cancel = () => {
       retryCount = 0;
       canceled = true;
+      finished = true;
 
       const message = `Because of reason [user cancel], re-execute end`;
       console.warn(message);
@@ -29,15 +32,18 @@ export function reExecute<T>({
     const retry = async () => {
       try {
         const res = await cb();
+        finished = true;
         resolve(res);
       } catch (error) {
         if (canceled) {
           return
         }
 
-        let errorMsg = `${error}`;
+        let errorMsg = '';
         if (error instanceof Error) {
           errorMsg = error.message;
+        } else {
+          errorMsg = JSON.stringify(error)
         }
 
         const message = `Because of reason [${errorMsg}], start re-execute on ${retryCount}`;
@@ -48,6 +54,7 @@ export function reExecute<T>({
           const message = `Because of reason [${errorMsg}], re-execute end`;
           console.error(message);
           event(message)
+          finished = true;
           reject(error);
         } else if (retryCount !== 0) {
           if (retryCount > 0) {
@@ -62,8 +69,8 @@ export function reExecute<T>({
     retry();
   })
 
-
   return {
+    finished,
     promise: promise,
     cancel,
   };

@@ -1,8 +1,8 @@
 export function cancelablePromise<T>(originPromise: Promise<T>) {
-  let abort = () => { };
+  let abort = (msg: string) => { };
   const cancelPromise = new Promise((resolve, reject) => {
-    abort = () => {
-      reject(new CancelablePromiseError("promise aborted"))
+    abort = (msg: string = "promise aborted") => {
+      reject(new CancelablePromiseError(msg))
     };
   })
 
