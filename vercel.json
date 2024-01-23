@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/" },
+    { "source": "/ws", "destination": "ws://124.222.224.186:8800" }
   ]
 }
