@@ -29,4 +29,12 @@ export interface WsConfig {
     heartBeatConfig?: HeartbeatConfig;
     onOpened?: Function;
 }
+export interface WsConfigStrict {
+    address: string;
+    connectTimeout: number;
+    reconnectIntervalTime: number;
+    retry: number;
+    heartBeatConfig?: HeartbeatConfig;
+    onOpened?: Function;
+}
 //# sourceMappingURL=types.d.ts.map
