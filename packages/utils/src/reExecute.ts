@@ -8,7 +8,7 @@ export function reExecute<T>({
   retryCount: number;
   intervalTime?: number;
   event: (message: string) => void
-}): { promise: Promise<T>; cancel: Function, finished: boolean } {
+}): { promise: Promise<T>; cancel: Function } {
   let finished = false
 
   let canceled = false;
@@ -20,6 +20,10 @@ export function reExecute<T>({
 
 
     cancel = () => {
+      if (finished == true) {
+        return;
+      }
+
       retryCount = 0;
       canceled = true;
       finished = true;
@@ -70,7 +74,6 @@ export function reExecute<T>({
   })
 
   return {
-    finished,
     promise: promise,
     cancel,
   };

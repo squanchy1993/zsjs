@@ -5,8 +5,8 @@ import { reExecute } from "@zsjs/utils";
 
 export class Heartbeat {
   wsController: WsController;
-  sendTimer: null | NodeJS.Timeout = null;
-  reSendTimer: null | NodeJS.Timeout = null;
+  sendTimer?: NodeJS.Timeout;
+  reSendTimer?: NodeJS.Timeout;
   connectingXPromise: { promise: Promise<any>; cancel: Function } | null = null;
   startTime: number = 0;
 
@@ -38,21 +38,23 @@ export class Heartbeat {
     this.wsController.events.dispatchEvent("log", message);
 
     this.startTime = new Date().getTime();
-    this.wsController.send(this.options.sendMsg as string);
+
     this.sendTimer && clearTimeout(this.sendTimer);
     this.sendTimer = setTimeout(async () => {
       // console.log('------ heartbeat check lost connection and restart connect -----')
       if (this.wsController.connectStatus == SocketStatus.connected) {
-        await this.wsController._wsClose();
+        await this.wsController.close();
       }
       this.connectingXPromise = reExecute({
-        cb: () => this.wsController._wsConnect({}),
+        cb: () => this.wsController.connect({}, 0, 0),
         retryCount: -1,
         intervalTime: 2000,
         event: (message) =>
           this.wsController.events.dispatchEvent<string>("log", message),
       });
     }, this.options.timeout);
+
+    this.wsController.send(this.options.sendMsg as string);
   }
 
   received(msg: MessageEvent) {
@@ -75,23 +77,23 @@ export class Heartbeat {
     // clear sendTimer
     if (this.sendTimer) {
       clearTimeout(this.sendTimer);
-      this.sendTimer = null;
+      this.sendTimer = undefined;
     }
 
     if (!this.reSendTimer) {
       this.reSendTimer = setTimeout(() => {
         this.send();
         this.reSendTimer && clearTimeout(this.reSendTimer);
-        this.reSendTimer = null;
+        this.reSendTimer = undefined;
       }, this.options.intervalTime);
     }
   }
 
   clear() {
     this.sendTimer && clearTimeout(this.sendTimer);
-    this.sendTimer = null;
+    this.sendTimer = undefined;
     this.reSendTimer && clearTimeout(this.reSendTimer);
-    this.reSendTimer = null;
+    this.reSendTimer = undefined;
     this.connectingXPromise && this.connectingXPromise.cancel();
     // console.log(`------ heartbeat was cleared -----`);
     const message = `heartbeat was cleared out by user`;
