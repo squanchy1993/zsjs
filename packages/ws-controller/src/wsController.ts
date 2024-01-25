@@ -5,6 +5,7 @@ import {
   promiseCb,
   HeartbeatConfig,
   WsConfig,
+  WsConfigStrict
 } from "./types";
 import EventsCollect from "./EventsCollect";
 import { Heartbeat } from "./Heartbeat";
@@ -15,7 +16,7 @@ let wsInstance: WebSocket | null = null;
 
 export class WsController {
   // config
-  options: WsConfig = {
+  options: WsConfigStrict = {
     address: "",
     connectTimeout: 5000,
     reconnectIntervalTime: 2000,
@@ -61,7 +62,7 @@ export class WsController {
     wsOptions?: WsConfig;
     heartbeatOptions?: HeartbeatConfig;
   }) {
-    this.options = merge(this.options, wsOptions ?? {});
+    this.options = merge(this.options, wsOptions ?? {}) as WsConfigStrict;
     this.heartbeat.setOptions(heartbeatOptions);
   }
 
@@ -140,7 +141,7 @@ export class WsController {
   ): Promise<Object> {
     return new Promise<any>(async (resovle, reject) => {
       try {
-        let connectConfig = merge(this.options, options ?? {}) as WsConfig;
+        this.setOptions({wsOptions: options})
 
         if (this.connectStatus == SocketStatus.connected) {
           const message = "Websocket already connected";
@@ -148,7 +149,7 @@ export class WsController {
           return resovle({ success: true, message });
         }
 
-        if (!connectConfig.address) {
+        if (!this.options.address) {
           const message = "Websocket adress not exsit";
           this.events.dispatchEvent<string>("log", message);
           throw new Error(message);
@@ -165,9 +166,9 @@ export class WsController {
         // start conncet
         this.socketConnect?.cancel();
         this.socketConnect = undefined;
-        this.socketConnect = this._startWsConnect(connectConfig.address as string, retryCount, intervalTime);
+        this.socketConnect = this._startWsConnect(this.options.address as string, retryCount, intervalTime);
         let res = await this.socketConnect.promise;
-        
+
         this.connectStatus = SocketStatus.connected;
 
         this.options.onOpened?.(this);
