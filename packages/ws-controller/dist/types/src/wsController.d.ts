@@ -1,23 +1,21 @@
 /// <reference types="node" />
-import { SocketStatus, promiseCb, HeartbeatConfig, WsConfig } from "./types";
+import { SocketStatus, promiseCb, HeartbeatConfig, WsConfig, WsConfigStrict } from "./types";
 import EventsCollect from "./EventsCollect";
 import { Heartbeat } from "./Heartbeat";
 export declare class WsController {
-    options: WsConfig;
+    options: WsConfigStrict;
     _connectStatus: SocketStatus;
     get connectStatus(): SocketStatus;
     set connectStatus(status: SocketStatus);
     closingCb: promiseCb;
     pause: boolean;
     connectingTimer: NodeJS.Timeout | null;
-    closingTimer: NodeJS.Timeout | null;
-    connectingXPromise?: {
-        promise: Promise<any>;
-        cancel: Function;
-        finished: boolean;
-    };
     heartbeat: Heartbeat;
     events: EventsCollect;
+    socketConnect?: {
+        promise: Promise<any>;
+        cancel: Function;
+    };
     constructor(options: {
         wsOptions?: WsConfig;
         heartbeatOptions?: HeartbeatConfig;
@@ -26,25 +24,23 @@ export declare class WsController {
         wsOptions?: WsConfig;
         heartbeatOptions?: HeartbeatConfig;
     }): void;
-    _setSocketInstance(address: string): Promise<object>;
-    _wsConnect(options?: {
-        address?: string;
-        connectTimeout?: number;
-    }): Promise<Object>;
-    _clearConnect(): void;
-    _wsClose(): Promise<Object>;
-    _clearClose(): void;
-    /**
-     * Start connect websocket
-     */
+    _startWsConnect(address: string, retryCount?: number, intervalTime?: number): {
+        promise: Promise<Object>;
+        cancel: Function;
+    };
     connect(options?: {
         address?: string;
         connectTimeout?: number;
-    }): Promise<Object>;
+    }, retryCount?: number, intervalTime?: number): Promise<Object>;
+    closingTimer: NodeJS.Timeout | undefined;
+    _wsClose(): Promise<{
+        message: string;
+        success: boolean;
+    }>;
     /**
      * Close websocket
      */
-    close(): Promise<void>;
+    close(): Promise<unknown>;
     /**
      * Send msg
      * @param {string} msg - The event name.

@@ -3,8 +3,8 @@ import { HeartbeatConfig } from "./types";
 import { WsController } from "./wsController";
 export declare class Heartbeat {
     wsController: WsController;
-    sendTimer: null | NodeJS.Timeout;
-    reSendTimer: null | NodeJS.Timeout;
+    sendTimer?: NodeJS.Timeout;
+    reSendTimer?: NodeJS.Timeout;
     connectingXPromise: {
         promise: Promise<any>;
         cancel: Function;
