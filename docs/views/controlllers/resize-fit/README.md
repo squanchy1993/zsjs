@@ -9,14 +9,27 @@ subGroup: general
 This ResizeFit was designed to fit the upper container of a div, similar to the fit attribute of an image element.
 
 ## Demos
-### cover
-<Demo src="./demo/index.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#cover)
+
+### fill
+
+<Demo src="./demo/fill.tsx" />
+[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fill)
 
 ### contain
+
 <Demo src="./demo/contain.tsx" />
 [resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#contain)
 
+### fitHeight
+
+<Demo src="./demo/fitHeight.tsx" />
+[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitHeight)
+## Installing
+
+### fitWidth
+
+<Demo src="./demo/fitWidth.tsx" />
+[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidth)
 ## Installing
 
 `npm install @zsjs/resize-fit;`
@@ -37,7 +50,7 @@ This ResizeFit was designed to fit the upper container of a div, similar to the 
 const resizeFit = new ResizeFit({
   container: document.getElementById("father"),
   target: document.getElementById("child"),
-  mode: "cover", // contain
+  mode: "contain", // contain
 });
 
 // before unmount

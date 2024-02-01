@@ -6,7 +6,7 @@ export declare class ResizeFit {
     constructor({ container, target, mode, }: {
         container: HTMLElement;
         target: HTMLElement;
-        mode?: "cover" | "contain";
+        mode?: "fill" | "contain" | "fitHeight" | "fitWidth";
     });
     dispose(): void;
 }
