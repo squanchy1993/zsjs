@@ -30,6 +30,10 @@ const wsController = new WsController({
       wsCtl.send("Hello world"); // when connect success will call OnOpened function.
     },
   },
+
+  // The heartbeat check is successful when a message is sent to the server, and the 
+  // server responds with a message in a timely manner. If the client does not receive 
+  // a message or receives a timeout, it triggers the reconnect logic.
   heartbeatOptions: {
     // heartbeat setting.
     handleHeartbeatMsg: (msg) => {
