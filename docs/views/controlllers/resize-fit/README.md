@@ -24,13 +24,19 @@ This ResizeFit was designed to fit the upper container of a div, similar to the 
 
 <Demo src="./demo/fitHeight.tsx" />
 [resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitHeight)
-## Installing
 
 ### fitWidth
 
 <Demo src="./demo/fitWidth.tsx" />
 [resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidth)
-## Installing
+
+
+### fitWidthExtendHeight
+
+<Demo src="./demo/fitWidthExtendHeight.tsx" />
+[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidth)
+
+## install
 
 `npm install @zsjs/resize-fit;`
 
