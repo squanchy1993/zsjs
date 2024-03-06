@@ -1,43 +1,46 @@
-class y {
+class w {
   constructor({
-    container: l,
-    target: c,
-    mode: o = "fill"
+    container: d,
+    target: o,
+    mode: n = "fill"
   }) {
     this.childElement = {
       width: 0,
       height: 0
     }, this.resizeObserver = new ResizeObserver((f) => {
-      f.forEach((w) => {
-        let { offsetWidth: e, offsetHeight: i } = this.container, { width: a, height: s } = this.childElement, t = 0, h = 0, r = 0;
+      f.forEach((b) => {
+        let { offsetWidth: e, offsetHeight: i } = this.container, t = 0, s = 0, h = 0;
+        if (!this.childElement.width || !this.childElement.height) {
+          let { offsetWidth: l, offsetHeight: c } = this.target;
+          this.childElement.width = l, this.childElement.height = c;
+        }
+        let { width: a, height: r } = this.childElement;
         switch (this.mode) {
           case "fill":
-            let m = e / a, g = i / s;
-            this.target.style.transform = `matrix(${m}, 0, 0, ${g}, 0, 0)`;
+            let l = e / a, c = i / r;
+            this.target.style.transform = `matrix(${l}, 0, 0, ${c}, 0, 0)`;
             break;
           case "contain":
-            let $ = e / i, b = a / s;
-            $ < b ? (t = e / a, r = Math.abs(i - s * t) / 2) : (t = i / s, h = Math.abs(e - a * t) / 2), this.target.style.transform = `matrix(1, 0, 0, 1, ${h}, ${r}) scale(${t})`;
+            let m = e / i, g = a / r;
+            m < g ? (t = e / a, h = Math.abs(i - r * t) / 2) : (t = i / r, s = Math.abs(e - a * t) / 2), this.target.style.transform = `matrix(1, 0, 0, 1, ${s}, ${h}) scale(${t})`;
             break;
           case "fitWidth":
-            t = e / this.childElement.width, this.target.style.transform = `matrix(1, 0, 0, 1, ${h}, ${r}) scale(${t})`;
+            t = e / this.childElement.width, this.target.style.transform = `matrix(1, 0, 0, 1, ${s}, ${h}) scale(${t})`;
             break;
           case "fitWidthExtendHeight":
-            t = e / this.childElement.width, this.target.style.transform = `matrix(1, 0, 0, 1, ${h}, ${r}) scale(${t})`, this.target.style.height = `${i / t}px`;
+            t = e / this.childElement.width, this.target.style.transform = `matrix(1, 0, 0, 1, ${s}, ${h}) scale(${t})`, this.target.style.height = `${i / t}px`;
             break;
           case "fitHeight":
-            t = i / s, this.target.style.transform = `matrix(1, 0, 0, 1, ${h}, ${r}) scale(${t})`;
+            t = i / r, this.target.style.transform = `matrix(1, 0, 0, 1, ${s}, ${h}) scale(${t})`;
             break;
         }
       });
-    }), this.container = l, this.container.style.position = "relative", this.target = c;
-    let { offsetWidth: d, offsetHeight: n } = c;
-    this.childElement.width = d, this.childElement.height = n, this.target.style.position = "absolute", this.target.style.transformOrigin = "0 0", this.mode = o, this.resizeObserver.observe(l);
+    }), this.container = d, this.container.style.position = "relative", this.target = o, this.target.style.position = "absolute", this.target.style.transformOrigin = "0 0", this.mode = n, this.resizeObserver.observe(d);
   }
   dispose() {
     this.resizeObserver.unobserve(this.container);
   }
 }
 export {
-  y as ResizeFit
+  w as ResizeFit
 };

@@ -10,11 +10,19 @@ export class ResizeFit {
   resizeObserver = new ResizeObserver((items) => {
     items.forEach((item) => {
       let { offsetWidth: fatherWidth, offsetHeight: fatherHeight } = this.container;
-      let { width: childWidth, height: childHeight } = this.childElement;
 
       let scale = 0;
       let moveX = 0;
       let moveY = 0;
+
+      // Save the target's original sizes;
+      if (!this.childElement.width || !this.childElement.height) {
+        let { offsetWidth: childWidth, offsetHeight: childHeight } = this.target;
+        this.childElement.width = childWidth;
+        this.childElement.height = childHeight;
+      }
+
+      let { width: childWidth, height: childHeight } = this.childElement;
 
       switch (this.mode) {
         case 'fill':
@@ -32,6 +40,7 @@ export class ResizeFit {
             scale = fatherHeight / childHeight;
             moveX = Math.abs(fatherWidth - childWidth * scale) / 2;
           }
+
           this.target.style.transform = `matrix(1, 0, 0, 1, ${moveX}, ${moveY}) scale(${scale})`;
           break;
         case 'fitWidth':
@@ -71,9 +80,6 @@ export class ResizeFit {
 
     // set target;
     this.target = target;
-    let { offsetWidth: childWidth, offsetHeight: childHeight } = target;
-    this.childElement.width = childWidth;
-    this.childElement.height = childHeight;
     this.target.style.position = 'absolute';
     this.target.style.transformOrigin = "0 0";
 
