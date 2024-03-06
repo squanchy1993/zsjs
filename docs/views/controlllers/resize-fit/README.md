@@ -34,7 +34,7 @@ This ResizeFit was designed to fit the upper container of a div, similar to the 
 ### fitWidthExtendHeight
 
 <Demo src="./demo/fitWidthExtendHeight.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidth)
+[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidthExtendHeight)
 
 ## install
 
@@ -56,7 +56,7 @@ This ResizeFit was designed to fit the upper container of a div, similar to the 
 const resizeFit = new ResizeFit({
   container: document.getElementById("father"),
   target: document.getElementById("child"),
-  mode: "contain", // contain
+  mode: "contain", // fill | contain | fitHeight | fitWidth | fitWidthExtendHeight |
 });
 
 // before unmount
