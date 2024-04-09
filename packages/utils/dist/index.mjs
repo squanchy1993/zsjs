@@ -1,103 +1,103 @@
-function E(r, e = 1e3) {
-  let t = !1, s, n = 1e3;
-  e && (n = e);
-  const i = async () => {
+function y(s, t = 1e3) {
+  let e = !1, r, i = 1e3;
+  t && (i = t);
+  const n = async () => {
     try {
-      await r();
+      await s();
     } finally {
-      t && (s = setTimeout(() => {
-        clearTimeout(s), i();
-      }, n));
+      e && (r = setTimeout(() => {
+        clearTimeout(r), n();
+      }, i));
     }
   };
   return {
     start: () => {
-      if (t)
+      if (e)
         throw new Error("ready start!");
-      t = !0, i();
+      e = !0, n();
     },
-    stop: () => t = !1,
-    refresh: i,
-    setTime: (f) => {
-      n = f;
+    stop: () => e = !1,
+    refresh: n,
+    setTime: (l) => {
+      i = l;
     }
   };
 }
 function x({
-  cb: r,
-  retryCount: e,
-  intervalTime: t,
-  event: s
+  cb: s,
+  retryCount: t,
+  intervalTime: e,
+  event: r
 }) {
-  let n = !1, i = !1, c = () => {
+  let i = !1, n = !1, a = () => {
   };
   return {
-    promise: new Promise(async (a, f) => {
-      c = () => {
-        if (n == !0)
+    promise: new Promise(async (c, l) => {
+      a = () => {
+        if (i == !0)
           return;
-        e = 0, i = !0, n = !0;
+        t = 0, n = !0, i = !0;
         const o = "Because of reason [user cancel], re-execute end";
-        return console.warn(o), s(o), f(new Error(o));
+        return console.warn(o), r(o), l(new Error(o));
       };
-      const m = async () => {
+      const g = async () => {
         try {
-          const o = await r();
-          n = !0, a(o);
+          const o = await s();
+          i = !0, c(o);
         } catch (o) {
-          if (i)
+          if (n)
             return;
-          let l = "";
-          o instanceof Error ? l = o.message : l = JSON.stringify(o);
-          const d = `Because of reason [${l}], start re-execute on ${e}`;
-          if (console.warn(d), s(d), e == 0) {
-            const p = `Because of reason [${l}], re-execute end`;
-            console.error(p), s(p), n = !0, f(o);
+          let f = "";
+          o instanceof Error ? f = o.message : f = JSON.stringify(o);
+          const S = `Because of reason [${f}], start re-execute on ${t}`;
+          if (console.warn(S), r(S), t == 0) {
+            const d = `Because of reason [${f}], re-execute end`;
+            console.error(d), r(d), i = !0, l(o);
           } else
-            e !== 0 && (e > 0 && e--, setTimeout(() => {
-              m();
-            }, t));
+            t !== 0 && (t > 0 && t--, setTimeout(() => {
+              g();
+            }, e));
         }
       };
-      m();
+      g();
     }),
-    cancel: c
+    cancel: a
   };
 }
-function g(r, e) {
-  let t = (c) => {
-  }, s;
-  e && (s = setTimeout(() => {
-    t("execute function timeout");
-  }, e));
-  const n = new Promise((c, h) => {
-    t = (a = "promise aborted") => {
-      h(new w(a));
+function L(s, t) {
+  let e = (a) => {
+  }, r;
+  t && (r = setTimeout(() => {
+    e("execute function timeout");
+  }, t));
+  const i = new Promise((a, h) => {
+    e = (c = "promise aborted") => {
+      h(new m(c));
     };
   });
   return {
-    promise: Promise.race([r, n]).then((c) => (s && (clearTimeout(s), s = void 0), c)),
-    abort: t
+    promise: Promise.race([s, i]).then((a) => (r && (clearTimeout(r), r = void 0), a)),
+    abort: e
   };
 }
-class w extends Error {
-  constructor(e) {
-    super(e);
+class m extends Error {
+  constructor(t) {
+    super(t);
   }
 }
-function u(r) {
-  return r && (Array.isArray(r) ? r.map((e) => u(e)) : r instanceof Date ? new Date(r) : typeof r == "object" ? Object.fromEntries(
-    Object.entries(r).map(([e, t]) => [e, u(t)])
-  ) : r);
+function u(s) {
+  return s && (Array.isArray(s) ? s.map((t) => u(t)) : s instanceof Date ? new Date(s) : typeof s == "object" ? Object.fromEntries(
+    Object.entries(s).map(([t, e]) => [t, u(e)])
+  ) : s);
 }
-function y(r) {
-  const e = u(r);
-  return { data: r, defaultData: e, getClone: () => u(e) };
+function b(s) {
+  const t = u(s);
+  return { data: s, defaultData: t, getClone: () => u(t) };
 }
-class T {
-  constructor(e) {
-    this.events = {}, e.forEach((t) => {
-      Reflect.set(this.events, t, []);
+class w {
+  constructor(t) {
+    this.events = {}, t.forEach((e) => {
+      Reflect.set(this.events, e, []);
     });
   }
   /**
@@ -105,33 +105,102 @@ class T {
    * @param {string} eventName - The event name.
    * @param {function} fun - The callback function.
    */
-  addEventListener(e, t) {
-    if (!Reflect.has(this.events, e))
-      throw new Error(`event ${e} doesn't exist!`);
-    this.events[e].includes(t) || this.events[e].push(t);
+  addEventListener(t, e) {
+    if (!Reflect.has(this.events, t))
+      throw new Error(`event ${t} doesn't exist!`);
+    this.events[t].includes(e) || this.events[t].push(e);
   }
   /**
   * remove a callback function
   * @param {string} eventName - The event name.
   * @param {function} fun - The callback function.
   */
-  removeEventListener(e, t) {
-    if (!Reflect.has(this.events, e))
-      throw new Error(`event ${e} doesn't exist!`);
-    const s = this.events[e].indexOf(t);
-    s !== -1 && this.events[e].splice(s, 1);
+  removeEventListener(t, e) {
+    if (!Reflect.has(this.events, t))
+      throw new Error(`event ${t} doesn't exist!`);
+    const r = this.events[t].indexOf(e);
+    r !== -1 && this.events[t].splice(r, 1);
   }
-  dispatchEvent(e, t) {
-    if (!Reflect.has(this.events, e))
-      throw new Error(`event ${e} doesn't exist!`);
-    this.events[e].forEach((s) => s(t));
+  dispatchEvent(t, e) {
+    if (!Reflect.has(this.events, t))
+      throw new Error(`event ${t} doesn't exist!`);
+    this.events[t].forEach((r) => r(e));
+  }
+}
+function p(s = {}, t = {}) {
+  let e;
+  for (e in t)
+    s[e] = P(s[e]) ? p(s[e], t[e]) : s[e] = t[e];
+  return s;
+}
+function P(s) {
+  return Object.prototype.toString.call(s) === "[object Object]";
+}
+const E = {
+  searchParams: {},
+  pageParams: {
+    pageIndex: 1,
+    pageSize: 10
+  },
+  pageSizes: [10, 30, 50],
+  list: [],
+  total: 0,
+  totalPage: 0,
+  // status
+  getListStatus: "succeed",
+  // succeed, failed, loading;
+  searchStatus: "succeed",
+  // succeed failed, loading;
+  pagingStatus: "succeed"
+  /* succeed */
+  // succeed failed, loading;
+};
+class T {
+  constructor({ requestFun: t, listState: e }) {
+    this.events = new w(["changeState"]), this.setListState = (r) => {
+      let i = {
+        set: (a, h, c) => {
+          Reflect.set(a, h, c);
+          const l = u(a);
+          return this.events.dispatchEvent("changeState", l), !0;
+        }
+      };
+      const n = p(E, r);
+      return new Proxy(n, i);
+    }, this.getList = () => new Promise((r, i) => {
+      this.listState.getListStatus === "loading" && i(new Error("加载中,请稍等")), this.listState.getListStatus = "loading";
+      const n = { ...this.listState.searchParams, page: this.listState.pageParams };
+      this.requestFun(n).then((a) => {
+        const { list: h, total: c, totalPage: l = 0 } = a;
+        this.listState.totalPage = l, this.listState.total = c, this.listState.list = h, this.listState.getListStatus = "succeed", r(a);
+      }).catch((a) => {
+        console.error(a), this.listState.getListStatus = "failed", i(a);
+      });
+    }), this.handleSearch = async () => {
+      this.listState.searchStatus = "loading", this.listState.pageParams.pageIndex = 1;
+      try {
+        const r = await this.getList();
+        return this.listState.searchStatus = "succeed", r;
+      } catch (r) {
+        console.error("search get error:" + r), this.listState.searchStatus = "failed";
+      }
+    }, this.handlePageChange = async ({ pageIndex: r, pageSize: i }) => {
+      this.listState.pagingStatus = "loading", r && (this.listState.pageParams.pageIndex = r), i && (this.listState.pageParams.pageSize = i);
+      try {
+        const n = await this.getList();
+        return this.listState.pagingStatus = "succeed", n;
+      } catch (n) {
+        console.error("search get error:" + n), this.listState.pagingStatus = "failed";
+      }
+    }, this.listState = this.setListState(e), t && (this.requestFun = t);
   }
 }
 export {
-  T as EventsCollect,
-  g as cancelablePromise,
-  y as dataWithDefault,
+  w as EventsCollect,
+  T as ListInstance,
+  L as cancelablePromise,
+  b as dataWithDefault,
   u as deepClone,
-  E as loopFunc,
+  y as loopFunc,
   x as reExecute
 };

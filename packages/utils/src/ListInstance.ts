@@ -43,7 +43,7 @@ export class ListInstance {
 
   setListState = (listState?: ListStateType) => {
     let handler = {
-      set: function (target: ListStateType, prop: keyof ListStateType, value: any) {
+      set: (target: ListStateType, prop: keyof ListStateType, value: any) => {
         Reflect.set(target, prop, value)
         const data: ListStateType = deepClone(target);
         this.events.dispatchEvent("changeState", data)
