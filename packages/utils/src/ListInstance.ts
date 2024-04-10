@@ -1,6 +1,7 @@
 import { deepClone } from './deepClone';
 import { deepMerge } from './deepMerge'
 import { EventsCollect } from './eventsCollect'
+import { debounce } from "lodash-es";
 
 enum ListInstanceStatus { succeed = 'succeed', failed = 'failed', loading = 'loading' }
 
@@ -41,12 +42,23 @@ export class ListInstance {
     }
   }
 
+  // add listener
+  addStateChangeListener = (fun: Function) => this.events.addEventListener('changeState', fun)
+
+  // remove listener
+  removeStateChangeListener = (fun: Function) => this.events.removeEventListener('changeState', fun)
+
+  // emit state change
+  dispatchStateChangeListener = debounce(()=> {
+    const data: ListStateType = deepClone(this.listState) as ListStateType;
+    this.events.dispatchEvent("changeState", data)
+  }, 50)
+
   setListState = (listState?: ListStateType) => {
     let handler = {
       set: (target: ListStateType, prop: keyof ListStateType, value: any) => {
         Reflect.set(target, prop, value)
-        const data: ListStateType = deepClone(target);
-        this.events.dispatchEvent("changeState", data)
+        this.dispatchStateChangeListener()
         return true;
       }
     };
