@@ -1,6 +1,6 @@
 {
   "name": "@zsjs/utils",
-  "version": "0.0.8",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "unpkg": "dist/index.umd.js",
