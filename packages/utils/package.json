@@ -36,10 +36,8 @@
     "build:vite": "vite build",
     "build:types": "tsc --skipLibCheck --declaration --emitDeclarationOnly --declarationDir dist/types"
   },
-  "dependencies": {
-    "lodash-es": "^4.17.21"
-  },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.12"
+    "@types/lodash-es": "^4.17.12",
+    "lodash-es": "^4.17.21"
   }
 }

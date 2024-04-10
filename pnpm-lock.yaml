@@ -149,14 +149,13 @@ importers:
   packages/resize-fit: {}
 
   packages/utils:
-    dependencies:
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
     devDependencies:
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
 
   packages/ws-controller: {}
 
@@ -2695,7 +2694,7 @@ packages:
 
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
+    dev: true
 
   /longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
