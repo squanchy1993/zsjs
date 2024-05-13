@@ -336,10 +336,10 @@ function bt(t) {
 export {
   M as EventsCollect,
   pt as ListInstance,
-  bt as asyncPromise,
   mt as cancelablePromise,
   St as dataWithDefault,
   b as deepClone,
   dt as loopFunc,
-  gt as reExecute
+  gt as reExecute,
+  bt as syncPromise
 };

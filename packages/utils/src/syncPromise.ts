@@ -1,4 +1,4 @@
-export function asyncPromise<P, R>(fun: (parameters: P) => Promise<R>) {
+export function syncPromise<P, R>(fun: (parameters: P) => Promise<R>) {
   let loginCB: { succeed: Function[], fail: Function[] } = {
     succeed: [],
     fail: []
