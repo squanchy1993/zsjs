@@ -49,8 +49,8 @@ function gt({
             return;
           let h = "";
           f instanceof Error ? h = f.message : h = JSON.stringify(f);
-          const S = `Because of reason [${h}], start re-execute on ${e}`;
-          if (console.warn(S), s(S), e == 0) {
+          const m = `Because of reason [${h}], start re-execute on ${e}`;
+          if (console.warn(m), s(m), e == 0) {
             const y = `Because of reason [${h}], re-execute end`;
             console.error(y), s(y), n = !0, u(f);
           } else
@@ -64,7 +64,7 @@ function gt({
     cancel: a
   };
 }
-function St(t, e) {
+function mt(t, e) {
   let r = (a) => {
   }, s;
   e && (s = setTimeout(() => {
@@ -72,7 +72,7 @@ function St(t, e) {
   }, e));
   const n = new Promise((a, i) => {
     r = (l = "promise aborted") => {
-      i(new B(l));
+      i(new A(l));
     };
   });
   return {
@@ -80,7 +80,7 @@ function St(t, e) {
     abort: r
   };
 }
-class B extends Error {
+class A extends Error {
   constructor(e) {
     super(e);
   }
@@ -90,7 +90,7 @@ function b(t) {
     Object.entries(t).map(([e, r]) => [e, b(r)])
   ) : t);
 }
-function mt(t) {
+function St(t) {
   const e = b(t);
   return { data: t, defaultData: e, getClone: () => b(e) };
 }
@@ -136,7 +136,7 @@ function C(t = {}, e = {}) {
 function F(t) {
   return Object.prototype.toString.call(t) === "[object Object]";
 }
-var z = typeof global == "object" && global && global.Object === Object && global, G = typeof self == "object" && self && self.Object === Object && self, R = z || G || Function("return this")(), v = R.Symbol, k = Object.prototype, U = k.hasOwnProperty, _ = k.toString, p = v ? v.toStringTag : void 0;
+var z = typeof global == "object" && global && global.Object === Object && global, G = typeof self == "object" && self && self.Object === Object && self, k = z || G || Function("return this")(), v = k.Symbol, R = Object.prototype, U = R.hasOwnProperty, _ = R.toString, p = v ? v.toStringTag : void 0;
 function q(t) {
   var e = U.call(t, p), r = t[p];
   try {
@@ -151,9 +151,9 @@ var H = Object.prototype, J = H.toString;
 function X(t) {
   return J.call(t);
 }
-var K = "[object Null]", Q = "[object Undefined]", L = v ? v.toStringTag : void 0;
+var K = "[object Null]", Q = "[object Undefined]", O = v ? v.toStringTag : void 0;
 function V(t) {
-  return t == null ? t === void 0 ? Q : K : L && L in Object(t) ? q(t) : X(t);
+  return t == null ? t === void 0 ? Q : K : O && O in Object(t) ? q(t) : X(t);
 }
 function Y(t) {
   return t != null && typeof t == "object";
@@ -172,7 +172,7 @@ var rt = /^\s+/;
 function nt(t) {
   return t && t.slice(0, et(t) + 1).replace(rt, "");
 }
-function j(t) {
+function w(t) {
   var e = typeof t;
   return t != null && (e == "object" || e == "function");
 }
@@ -182,9 +182,9 @@ function $(t) {
     return t;
   if (N(t))
     return I;
-  if (j(t)) {
+  if (w(t)) {
     var e = typeof t.valueOf == "function" ? t.valueOf() : t;
-    t = j(e) ? e + "" : e;
+    t = w(e) ? e + "" : e;
   }
   if (typeof t != "string")
     return t === 0 ? t : +t;
@@ -193,54 +193,54 @@ function $(t) {
   return r || at.test(t) ? ot(t.slice(2), r ? 2 : 8) : st.test(t) ? I : +t;
 }
 var E = function() {
-  return R.Date.now();
+  return k.Date.now();
 }, ct = "Expected a function", lt = Math.max, ft = Math.min;
 function ut(t, e, r) {
   var s, n, o, a, i, l, u = 0, g = !1, f = !1, h = !0;
   if (typeof t != "function")
     throw new TypeError(ct);
-  e = $(e) || 0, j(r) && (g = !!r.leading, f = "maxWait" in r, o = f ? lt($(r.maxWait) || 0, e) : o, h = "trailing" in r ? !!r.trailing : h);
-  function S(c) {
-    var d = s, m = n;
-    return s = n = void 0, u = c, a = t.apply(m, d), a;
+  e = $(e) || 0, w(r) && (g = !!r.leading, f = "maxWait" in r, o = f ? lt($(r.maxWait) || 0, e) : o, h = "trailing" in r ? !!r.trailing : h);
+  function m(c) {
+    var d = s, S = n;
+    return s = n = void 0, u = c, a = t.apply(S, d), a;
   }
   function y(c) {
-    return u = c, i = setTimeout(T, e), g ? S(c) : a;
+    return u = c, i = setTimeout(T, e), g ? m(c) : a;
   }
   function D(c) {
-    var d = c - l, m = c - u, P = e - d;
-    return f ? ft(P, o - m) : P;
+    var d = c - l, S = c - u, L = e - d;
+    return f ? ft(L, o - S) : L;
   }
-  function w(c) {
-    var d = c - l, m = c - u;
-    return l === void 0 || d >= e || d < 0 || f && m >= o;
+  function P(c) {
+    var d = c - l, S = c - u;
+    return l === void 0 || d >= e || d < 0 || f && S >= o;
   }
   function T() {
     var c = E();
-    if (w(c))
-      return O(c);
+    if (P(c))
+      return j(c);
     i = setTimeout(T, D(c));
   }
-  function O(c) {
-    return i = void 0, h && s ? S(c) : (s = n = void 0, a);
+  function j(c) {
+    return i = void 0, h && s ? m(c) : (s = n = void 0, a);
   }
-  function W() {
+  function B() {
     i !== void 0 && clearTimeout(i), u = 0, s = l = n = i = void 0;
   }
-  function A() {
-    return i === void 0 ? a : O(E());
+  function W() {
+    return i === void 0 ? a : j(E());
   }
   function x() {
-    var c = E(), d = w(c);
+    var c = E(), d = P(c);
     if (s = arguments, n = this, l = c, d) {
       if (i === void 0)
         return y(l);
       if (f)
-        return clearTimeout(i), i = setTimeout(T, e), S(l);
+        return clearTimeout(i), i = setTimeout(T, e), m(l);
     }
     return i === void 0 && (i = setTimeout(T, e)), a;
   }
-  return x.cancel = W, x.flush = A, x;
+  return x.cancel = B, x.flush = W, x;
 }
 const ht = {
   searchParams: {},
@@ -312,11 +312,33 @@ class pt {
     }, e && (this.requestFun = e), this.listState = this.setListState(r), this.listType = s;
   }
 }
+function bt(t) {
+  let e = {
+    succeed: [],
+    fail: []
+  }, r = !1;
+  return async function(s) {
+    return new Promise(async (n, o) => {
+      if (e.succeed.push(n), e.fail.push(o), !r) {
+        r = !0;
+        try {
+          const a = await t(s);
+          e.succeed.map((i) => i(a));
+        } catch (a) {
+          e.fail.map((i) => i(a));
+        } finally {
+          e.succeed = [], e.fail = [], r = !1;
+        }
+      }
+    });
+  };
+}
 export {
   M as EventsCollect,
   pt as ListInstance,
-  St as cancelablePromise,
-  mt as dataWithDefault,
+  bt as asyncPromise,
+  mt as cancelablePromise,
+  St as dataWithDefault,
   b as deepClone,
   dt as loopFunc,
   gt as reExecute
