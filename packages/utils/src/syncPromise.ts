@@ -1,16 +1,14 @@
-export function syncPromise<P, R>(fun: (parameters: P) => Promise<R>) {
+export function syncPromise<P, R>(fun: (parameters?: P) => Promise<R>) {
   let loginCB: { succeed: Function[], fail: Function[] } = {
     succeed: [],
     fail: []
   }
   let isLocked = false
-  return async function (parameters: P): Promise<R> {
+  return async function ({ Locked, parameters }: { Locked?: boolean, parameters?: P }): Promise<R | null> {
     return new Promise(async (resolve, reject) => {
-      loginCB.succeed.push(resolve)
-      loginCB.fail.push(reject)
 
-      if (!isLocked) {
-        isLocked = true
+      if (isLocked === false && Locked === true) {
+        isLocked = Locked
         try {
           const data = await fun(parameters)
           loginCB.succeed.map(fun => fun(data))
@@ -21,6 +19,13 @@ export function syncPromise<P, R>(fun: (parameters: P) => Promise<R>) {
           loginCB.fail = []
           isLocked = false
         }
+      }
+
+      if (isLocked) {
+        loginCB.succeed.push(resolve)
+        loginCB.fail.push(reject)
+      } else {
+        resolve(null)
       }
     })
   }
