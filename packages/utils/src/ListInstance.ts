@@ -85,7 +85,7 @@ export class ListInstance {
         return true;
       },
     };
-    const listStateData = deepMerge(listDataDefault, listState);
+    const listStateData = deepMerge(deepClone(listDataDefault), listState);
     return new Proxy(listStateData, handler);
   };
 
@@ -109,7 +109,10 @@ export class ListInstance {
           this.listState.total = total;
 
           // replace list;
-          if ( this.listType == ListType.replace || this.listState.pageParams.pageIndex == 1 ) {
+          if (
+            this.listType == ListType.replace ||
+            this.listState.pageParams.pageIndex == 1
+          ) {
             this.listState.list = list;
           } else {
             // concat list;
