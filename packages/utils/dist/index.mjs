@@ -85,14 +85,14 @@ class A extends Error {
     super(e);
   }
 }
-function b(t) {
-  return t && (Array.isArray(t) ? t.map((e) => b(e)) : t instanceof Date ? new Date(t) : typeof t == "object" ? Object.fromEntries(
-    Object.entries(t).map(([e, r]) => [e, b(r)])
+function S(t) {
+  return t && (Array.isArray(t) ? t.map((e) => S(e)) : t instanceof Date ? new Date(t) : typeof t == "object" ? Object.fromEntries(
+    Object.entries(t).map(([e, r]) => [e, S(r)])
   ) : t);
 }
 function St(t) {
-  const e = b(t);
-  return { data: t, defaultData: e, getClone: () => b(e) };
+  const e = S(t);
+  return { data: t, defaultData: e, getClone: () => S(e) };
 }
 class M {
   constructor(e) {
@@ -136,16 +136,16 @@ function C(t = {}, e = {}) {
 function F(t) {
   return Object.prototype.toString.call(t) === "[object Object]";
 }
-var z = typeof global == "object" && global && global.Object === Object && global, G = typeof self == "object" && self && self.Object === Object && self, R = z || G || Function("return this")(), v = R.Symbol, k = Object.prototype, U = k.hasOwnProperty, _ = k.toString, p = v ? v.toStringTag : void 0;
+var z = typeof global == "object" && global && global.Object === Object && global, G = typeof self == "object" && self && self.Object === Object && self, R = z || G || Function("return this")(), v = R.Symbol, k = Object.prototype, U = k.hasOwnProperty, _ = k.toString, b = v ? v.toStringTag : void 0;
 function q(t) {
-  var e = U.call(t, p), r = t[p];
+  var e = U.call(t, b), r = t[b];
   try {
-    t[p] = void 0;
+    t[b] = void 0;
     var s = !0;
   } catch {
   }
   var n = _.call(t);
-  return s && (e ? t[p] = r : delete t[p]), n;
+  return s && (e ? t[b] = r : delete t[b]), n;
 }
 var H = Object.prototype, J = H.toString;
 function X(t) {
@@ -201,19 +201,19 @@ function ut(t, e, r) {
     throw new TypeError(ct);
   e = $(e) || 0, w(r) && (g = !!r.leading, f = "maxWait" in r, a = f ? lt($(r.maxWait) || 0, e) : a, h = "trailing" in r ? !!r.trailing : h);
   function m(l) {
-    var d = s, S = n;
-    return s = n = void 0, u = l, o = t.apply(S, d), o;
+    var d = s, p = n;
+    return s = n = void 0, u = l, o = t.apply(p, d), o;
   }
   function y(l) {
     return u = l, i = setTimeout(T, e), g ? m(l) : o;
   }
   function D(l) {
-    var d = l - c, S = l - u, O = e - d;
-    return f ? ft(O, a - S) : O;
+    var d = l - c, p = l - u, O = e - d;
+    return f ? ft(O, a - p) : O;
   }
   function P(l) {
-    var d = l - c, S = l - u;
-    return c === void 0 || d >= e || d < 0 || f && S >= a;
+    var d = l - c, p = l - u;
+    return c === void 0 || d >= e || d < 0 || f && p >= a;
   }
   function T() {
     var l = E();
@@ -269,13 +269,13 @@ class pt {
     /* replace */
   }) {
     this.events = new M(["changeState"]), this.addStateChangeListener = (n) => this.events.addEventListener("changeState", n), this.removeStateChangeListener = (n) => this.events.removeEventListener("changeState", n), this.dispatchStateChangeListener = ut(() => {
-      const n = b(this.listState);
+      const n = S(this.listState);
       this.events.dispatchEvent("changeState", n);
     }, 50), this.setListState = (n) => {
       let a = {
         set: (i, c, u) => (Reflect.set(i, c, u), this.dispatchStateChangeListener(), !0)
       };
-      const o = C(ht, n);
+      const o = C(S(ht), n);
       return new Proxy(o, a);
     }, this.getList = () => new Promise((n, a) => {
       this.listState.getListStatus === "loading" && a(new Error("加载中,请稍等")), this.listState.getListStatus = "loading";
@@ -339,7 +339,7 @@ export {
   pt as ListInstance,
   mt as cancelablePromise,
   St as dataWithDefault,
-  b as deepClone,
+  S as deepClone,
   dt as loopFunc,
   gt as reExecute,
   bt as syncPromise
