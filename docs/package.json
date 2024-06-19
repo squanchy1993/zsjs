@@ -12,24 +12,27 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mdx-js/react": "^2.3.0",
+    "@mui/material": "^5.14.20",
+    "@mui/styled-engine-sc": "6.0.0-alpha.7",
+    "@types/react": "^18.2.13",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.0.1",
+    "classnames": "^2.3.2",
     "dayjs": "^1.11.10",
+    "globby": "^13.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.13.0",
-    "styled-components": "^6.1.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.20",
-    "@mui/styled-engine-sc": "6.0.0-alpha.7",
-    "@vitejs/plugin-react": "^4.0.1",
-    "globby": "^13.2.0",
     "serve": "^14.2.0",
-    "@mdx-js/react": "^2.3.0",
-    "@types/react": "^18.2.13",
-    "@types/react-dom": "^18.2.18",
+    "styled-components": "^6.1.1",
+    "vite": "^5.0.10",
     "vite-pages-theme-doc": "^4.0.0",
-    "vite-plugin-react-pages": "^4.0.0",
-    "classnames": "^2.3.2",
-    "vite": "^5.0.10"
+    "vite-plugin-react-pages": "^4.0.0"
+  },
+  "dependencies": {
+    "@mui/x-data-grid": "^7.7.0"
   }
 }
