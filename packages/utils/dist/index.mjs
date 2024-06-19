@@ -51,8 +51,8 @@ function gt({
           f instanceof Error ? h = f.message : h = JSON.stringify(f);
           const m = `Because of reason [${h}], start re-execute on ${e}`;
           if (console.warn(m), s(m), e == 0) {
-            const y = `Because of reason [${h}], re-execute end`;
-            console.error(y), s(y), n = !0, u(f);
+            const b = `Because of reason [${h}], re-execute end`;
+            console.error(b), s(b), n = !0, u(f);
           } else
             e !== 0 && (e > 0 && e--, setTimeout(() => {
               g();
@@ -136,16 +136,16 @@ function C(t = {}, e = {}) {
 function F(t) {
   return Object.prototype.toString.call(t) === "[object Object]";
 }
-var z = typeof global == "object" && global && global.Object === Object && global, G = typeof self == "object" && self && self.Object === Object && self, R = z || G || Function("return this")(), v = R.Symbol, k = Object.prototype, U = k.hasOwnProperty, _ = k.toString, b = v ? v.toStringTag : void 0;
+var z = typeof global == "object" && global && global.Object === Object && global, G = typeof self == "object" && self && self.Object === Object && self, R = z || G || Function("return this")(), v = R.Symbol, k = Object.prototype, U = k.hasOwnProperty, _ = k.toString, y = v ? v.toStringTag : void 0;
 function q(t) {
-  var e = U.call(t, b), r = t[b];
+  var e = U.call(t, y), r = t[y];
   try {
-    t[b] = void 0;
+    t[y] = void 0;
     var s = !0;
   } catch {
   }
   var n = _.call(t);
-  return s && (e ? t[b] = r : delete t[b]), n;
+  return s && (e ? t[y] = r : delete t[y]), n;
 }
 var H = Object.prototype, J = H.toString;
 function X(t) {
@@ -172,7 +172,7 @@ var rt = /^\s+/;
 function nt(t) {
   return t && t.slice(0, et(t) + 1).replace(rt, "");
 }
-function w(t) {
+function E(t) {
   var e = typeof t;
   return t != null && (e == "object" || e == "function");
 }
@@ -182,9 +182,9 @@ function $(t) {
     return t;
   if (N(t))
     return I;
-  if (w(t)) {
+  if (E(t)) {
     var e = typeof t.valueOf == "function" ? t.valueOf() : t;
-    t = w(e) ? e + "" : e;
+    t = E(e) ? e + "" : e;
   }
   if (typeof t != "string")
     return t === 0 ? t : +t;
@@ -192,19 +192,19 @@ function $(t) {
   var r = it.test(t);
   return r || at.test(t) ? ot(t.slice(2), r ? 2 : 8) : st.test(t) ? I : +t;
 }
-var E = function() {
+var x = function() {
   return R.Date.now();
 }, ct = "Expected a function", lt = Math.max, ft = Math.min;
 function ut(t, e, r) {
   var s, n, a, o, i, c, u = 0, g = !1, f = !1, h = !0;
   if (typeof t != "function")
     throw new TypeError(ct);
-  e = $(e) || 0, w(r) && (g = !!r.leading, f = "maxWait" in r, a = f ? lt($(r.maxWait) || 0, e) : a, h = "trailing" in r ? !!r.trailing : h);
+  e = $(e) || 0, E(r) && (g = !!r.leading, f = "maxWait" in r, a = f ? lt($(r.maxWait) || 0, e) : a, h = "trailing" in r ? !!r.trailing : h);
   function m(l) {
     var d = s, p = n;
     return s = n = void 0, u = l, o = t.apply(p, d), o;
   }
-  function y(l) {
+  function b(l) {
     return u = l, i = setTimeout(T, e), g ? m(l) : o;
   }
   function D(l) {
@@ -216,7 +216,7 @@ function ut(t, e, r) {
     return c === void 0 || d >= e || d < 0 || f && p >= a;
   }
   function T() {
-    var l = E();
+    var l = x();
     if (P(l))
       return j(l);
     i = setTimeout(T, D(l));
@@ -228,19 +228,19 @@ function ut(t, e, r) {
     i !== void 0 && clearTimeout(i), u = 0, s = c = n = i = void 0;
   }
   function W() {
-    return i === void 0 ? o : j(E());
+    return i === void 0 ? o : j(x());
   }
-  function x() {
-    var l = E(), d = P(l);
+  function w() {
+    var l = x(), d = P(l);
     if (s = arguments, n = this, c = l, d) {
       if (i === void 0)
-        return y(c);
+        return b(c);
       if (f)
         return clearTimeout(i), i = setTimeout(T, e), m(c);
     }
     return i === void 0 && (i = setTimeout(T, e)), o;
   }
-  return x.cancel = B, x.flush = W, x;
+  return w.cancel = B, w.flush = W, w;
 }
 const ht = {
   searchParams: {},
@@ -268,12 +268,12 @@ class pt {
     listType: s = "replace"
     /* replace */
   }) {
-    this.events = new M(["changeState"]), this.addStateChangeListener = (n) => this.events.addEventListener("changeState", n), this.removeStateChangeListener = (n) => this.events.removeEventListener("changeState", n), this.dispatchStateChangeListener = ut(() => {
+    this.events = new M(["changeState"]), this.addStateChangeListener = (n) => this.events.addEventListener("changeState", n), this.removeStateChangeListener = (n) => this.events.removeEventListener("changeState", n), this.emitStateChange = ut(async () => {
       const n = S(this.listState);
       this.events.dispatchEvent("changeState", n);
-    }, 50), this.setListState = (n) => {
+    }), this.watchListState = (n) => {
       let a = {
-        set: (i, c, u) => (Reflect.set(i, c, u), this.dispatchStateChangeListener(), !0)
+        set: (i, c, u) => (Reflect.set(i, c, u), this.emitStateChange(), !0)
       };
       const o = C(S(ht), n);
       return new Proxy(o, a);
@@ -309,10 +309,10 @@ class pt {
       } catch (o) {
         console.error("search get error:" + o), this.listState.pagingStatus = "failed";
       }
-    }, e && (this.requestFun = e), this.listState = this.setListState(r), this.listType = s;
+    }, e && (this.requestFun = e), this.listState = this.watchListState(r), this.listType = s;
   }
 }
-function bt(t) {
+function yt(t) {
   let e = {
     succeed: [],
     fail: []
@@ -342,5 +342,5 @@ export {
   S as deepClone,
   dt as loopFunc,
   gt as reExecute,
-  bt as syncPromise
+  yt as syncPromise
 };

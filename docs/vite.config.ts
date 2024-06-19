@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react' // you can also use @vitejs/plugin-reac
 import pages, { DefaultPageStrategy } from 'vite-plugin-react-pages'
 
 export default defineConfig({
+  server: {
+    port: 5125
+  },
   plugins: [
     react(),
     pages({

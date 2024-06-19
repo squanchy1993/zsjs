@@ -58,7 +58,7 @@ export class ListInstance {
       this.requestFun = requestFun;
     }
 
-    this.listState = this.setListState(listState);
+    this.listState = this.watchListState(listState);
 
     this.listType = listType;
   }
@@ -72,16 +72,16 @@ export class ListInstance {
     this.events.removeEventListener("changeState", fun);
 
   // emit state change
-  dispatchStateChangeListener = debounce(() => {
+  emitStateChange = debounce(async () => {
     const data: ListStateType = deepClone(this.listState) as ListStateType;
     this.events.dispatchEvent("changeState", data);
-  }, 50);
+  })
 
-  setListState = (listState?: ListStateType) => {
+  watchListState = (listState?: ListStateType) => {
     let handler = {
       set: (target: ListStateType, prop: keyof ListStateType, value: any) => {
         Reflect.set(target, prop, value);
-        this.dispatchStateChangeListener();
+        this.emitStateChange()
         return true;
       },
     };
@@ -166,5 +166,5 @@ export class ListInstance {
       console.error("search get error:" + error);
       this.listState.pagingStatus = ListInstanceStatus.failed;
     }
-  };
+  }
 }

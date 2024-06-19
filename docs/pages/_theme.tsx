@@ -41,6 +41,18 @@ export default createTheme({
         },
       ]
     },
+
+    {
+      label: 'Utils',
+      path: '/views/utils/list-instance',
+      activeIfMatch: '/views/utils',
+      children: [
+        {
+          label: 'list-instance',
+          path: '/views/utils/list-instance',
+        },
+      ]
+    },
     { label: 'Vite', href: 'https://github.com/vitejs/vite' },
     {
       label: 'Vite Pages',
