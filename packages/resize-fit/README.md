@@ -13,28 +13,28 @@ This ResizeFit was designed to fit the upper container of a div, similar to the 
 ### fill
 
 <Demo src="./demo/fill.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fill)
+[resize-fit's demo](https://docs.zsjs.fun/views/controlllers/resize-fit#fill)
 
 ### contain
 
 <Demo src="./demo/contain.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#contain)
+[resize-fit's demo](https://docs.zsjs.fun/views/controlllers/resize-fit#contain)
 
 ### fitHeight
 
 <Demo src="./demo/fitHeight.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitHeight)
+[resize-fit's demo](https://docs.zsjs.fun/views/controlllers/resize-fit#fitHeight)
 
 ### fitWidth
 
 <Demo src="./demo/fitWidth.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidth)
+[resize-fit's demo](https://docs.zsjs.fun/views/controlllers/resize-fit#fitWidth)
 
 
 ### fitWidthExtendHeight
 
 <Demo src="./demo/fitWidthExtendHeight.tsx" />
-[resize-fit's demo](https://www.zsjs.fun/views/controlllers/resize-fit#fitWidthExtendHeight)
+[resize-fit's demo](https://docs.zsjs.fun/views/controlllers/resize-fit#fitWidthExtendHeight)
 
 ## install
 
